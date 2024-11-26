@@ -20,6 +20,7 @@ return {
       lua = { "stylua" },
       python = { "ruff" },
       odin = { lsp_format = "prefer" },
+      php = { "php" },
     },
     -- Set default options
     default_format_opts = {
@@ -28,5 +29,15 @@ return {
     -- Set up format-on-save
     format_on_save = { timeout_ms = 500 },
     -- Customize formatters
+    formatters = {
+      php = {
+        command = "php-cs-fixer",
+        args = {
+          "fix",
+          "$FILENAME",
+        },
+        stdin = false,
+      },
+    },
   },
 }

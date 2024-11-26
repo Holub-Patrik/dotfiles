@@ -26,6 +26,7 @@ return {
           "odin",
           "lua",
           "python",
+          "php",
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
