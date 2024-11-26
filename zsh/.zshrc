@@ -32,6 +32,7 @@ bindkey '^[[Z' reverse-menu-complete
 
 # add the odin binary
 export PATH="$PATH:$HOME/Odin"
+export GIT_EDITOR=nvim
 
 # starship command prompt
 prompt off
