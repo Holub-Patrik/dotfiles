@@ -13,10 +13,10 @@ source $HOME/.antigen.zsh
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
-antigen bundle heroku
-antigen bundle pip
-antigen bundle lein
-antigen bundle command-not-found
+# antigen bundle heroku
+# antigen bundle pip
+# antigen bundle lein
+# antigen bundle command-not-found
 antigen bundle ssh-agent
 
 # Syntax highlighting bundle.
@@ -32,7 +32,7 @@ bindkey '^[[Z' reverse-menu-complete
 
 # add the odin binary
 export PATH="$PATH:$HOME/Odin"
-export GIT_EDITOR=nvim
+export GIT_EDITOR="nvim"
 
 # starship command prompt
 prompt off

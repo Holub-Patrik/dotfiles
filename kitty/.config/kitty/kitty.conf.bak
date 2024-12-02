@@ -3,10 +3,6 @@
 # wallust-colors
 # include kitty-colors.conf 
 include mappings.conf
-font_family      family="Monaspace Neon"
-bold_font        auto
-italic_font      auto
-bold_italic_font auto
 font_size 12.0
 
 # Nerd Fonts v3.2.0
@@ -35,5 +31,18 @@ foreground #dddddd
 background #000000
 cursor #dddddd
 
+# BEGIN_KITTY_FONTS
+font_family      family='Monaspace Neon' postscript_name=MonaspaceNeon-Regular features='calt liga ss01 ss02 ss03 ss04 ss05 ss07 ss08 ss09'
+bold_font        auto
+italic_font      family='Monaspace Neon' features='+liga +ss01 +ss02 +ss03 +ss04 +ss05 +ss07 +ss08 +ss09 +calt'
+bold_italic_font auto
+# END_KITTY_FONTS
 
-
+tab_bar_min_tabs 2
+tab_bar_edge bottom
+tab_bar_style separator
+tab_title_template " {index}[{tab.active_exe}]"
+active_tab_background #000000
+active_tab_foreground #ffffff
+inactive_tab_background #000000
+inactive_tab_foreground #808080
