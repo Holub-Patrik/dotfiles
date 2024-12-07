@@ -1,18 +1,23 @@
-local servers = { "lua_ls", "ols", "rust_analyzer", "clangd" }
+local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd" }
 local cmp_caps = require("cmp_nvim_lsp").default_capabilities()
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-require("mason-lspconfig").setup({
-	ensure_installed = servers,
+local mason_lsp_config = require("mason-lspconfig")
+local lsp_config = require("lspconfig")
+
+mason_lsp_config.setup({
+	ensure_installed = ensured_servers,
 })
 
-local lsp_config = require("lspconfig")
-for _, server in pairs(servers) do
-	lsp_config[server].setup({
-		capabilities = cmp_caps,
-	})
-end
+mason_lsp_config.setup_handlers({
+	function(server)
+		lsp_config[server].setup({
+			capabilities = cmp_caps,
+		})
+	end,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp Actions",
 	callback = function()
@@ -76,19 +81,19 @@ cmp.setup({
 		["<S-up>"] = cmp.mapping.scroll_docs(-4),
 		["<S-down>"] = cmp.mapping.scroll_docs(4),
 		["<tab>"] = cmp.mapping(function(fallback)
-			if luasnip.jumpable(1) then
-				luasnip.jump(1)
-			elseif cmp.visible() then
+			if cmp.visible() then
 				cmp.select_next_item(select_opts)
+			elseif luasnip.jumpable(1) then
+				luasnip.jump(1)
 			else
 				fallback()
 			end
 		end, { "i", "s" }),
 		["<S-tab>"] = cmp.mapping(function(fallback)
-			if luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			elseif cmp.visible() then
+			if cmp.visible() then
 				cmp.select_prev_item(select_opts)
+			elseif luasnip.jumpable(-1) then
+				luasnip.jump(-1)
 			else
 				fallback()
 			end
