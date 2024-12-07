@@ -44,4 +44,16 @@ source <(fzf --zsh)
 # the fuck ?
 eval "$(thefuck --alias fuck)"
 
-alias ls="eza --icons=always"
+alias ls="eza --icons"
+alias la="eza -a --icons"
+alias ll="eza -al --icons"
+alias lt="eza -a --tree --level=1 --icons"
+
+
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+[[ ! -r '/home/holubpat/.opam/opam-init/init.zsh' ]] || source '/home/holubpat/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+# END opam configuration
