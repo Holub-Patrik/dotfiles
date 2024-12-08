@@ -3,8 +3,8 @@ return {
 	config = function()
 		require("Comment").setup({
 			toggler = {
-				line = "<leader>//",
-				block = "<leader>/{",
+				line = "<leader>/",
+				block = "<leader>{",
 			},
 			mappings = {
 				extra = false,
