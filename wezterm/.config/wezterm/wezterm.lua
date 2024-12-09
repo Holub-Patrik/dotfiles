@@ -76,6 +76,26 @@ config.keys = {
 		mods = "CTRL",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
+	{
+		key = "LeftArrow",
+		mods = "ALT",
+		action = wezterm.action.ActivatePaneDirection("Left"),
+	},
+	{
+		key = "RightArrow",
+		mods = "ALT",
+		action = wezterm.action.ActivatePaneDirection("Right"),
+	},
+	{
+		key = "UpArrow",
+		mods = "ALT",
+		action = wezterm.action.ActivatePaneDirection("Up"),
+	},
+	{
+		key = "DownArrow",
+		mods = "ALT",
+		action = wezterm.action.ActivatePaneDirection("Down"),
+	},
 }
 
 -- config.color_scheme = "Builtin Tango Dark"
