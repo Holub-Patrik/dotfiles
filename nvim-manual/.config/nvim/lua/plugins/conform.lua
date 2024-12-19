@@ -19,7 +19,7 @@ return {
 		-- Define your formatters
 		formatters_by_ft = {
 			lua = { "stylua" },
-			python = { "isort", "black" },
+			python = { "ruff" },
 			javascript = { "prettierd", "prettier", stop_after_first = true },
 		},
 		default_format_opts = {
@@ -28,4 +28,11 @@ return {
 		format_on_save = { timeout_ms = 500 },
 		formatters = {},
 	},
+	config = function()
+		require("conform").formatters.php = {
+			inherit = false,
+			command = "php-cs-fixer",
+			args = { "fix", "." },
+		}
+	end,
 }
