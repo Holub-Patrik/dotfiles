@@ -39,6 +39,7 @@ return {
 		if params.std then
 			table.insert(args, params.std)
 		end
+		table.insert(args, "-g")
 		if params.extra_flags then
 			table.insert(args, params.extra_flags)
 		end

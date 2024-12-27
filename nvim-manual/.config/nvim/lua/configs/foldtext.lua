@@ -92,9 +92,7 @@ function HighlightedFoldtext()
 	end
 
 	local folded = {
-		{ " ", "FoldedIcon" },
-		{ "+" .. vim.v.foldend - vim.v.foldstart .. " lines", "FoldedText" },
-		{ " ", "FoldedIcon" },
+		{ " " .. vim.v.foldend - vim.v.foldstart .. " lines ", "FoldedText" },
 	}
 
 	for _, item in ipairs(folded) do
@@ -114,10 +112,12 @@ function HighlightedFoldtext()
 end
 
 local function set_fold_hl()
-	local nf = vim.api.nvim_get_hl(0, { name = "NormalFloat", link = false })
+	-- local nf = vim.api.nvim_get_hl(0, { name = "NormalFloat", link = false })
 	local comment = vim.api.nvim_get_hl(0, { name = "Comment", link = false })
-	vim.api.nvim_set_hl(0, "FoldedIcon", { fg = nf.bg })
-	vim.api.nvim_set_hl(0, "FoldedText", { bg = nf.bg, fg = comment.fg, italic = true })
+	local hl = vim.api.nvim_get_hl(0, { name = "Folded" })
+	hl.bg = 00000000
+	vim.api.nvim_set_hl(0, "FoldedText", { bg = 00000000, fg = comment.fg, italic = true })
+	vim.api.nvim_set_hl(0, "Folded", hl)
 end
 
 set_fold_hl()
@@ -125,5 +125,7 @@ set_fold_hl()
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = set_fold_hl,
 })
+
+vim.opt.fillchars:append({ fold = " " })
 
 return 'luaeval("HighlightedFoldtext")()'
