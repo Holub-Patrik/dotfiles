@@ -21,3 +21,17 @@ vim.o.foldenable = true
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldtext = require("configs.foldtext")
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+	pattern = "*.*",
+	callback = function()
+		vim.cmd("mkview")
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	pattern = "*.*",
+	callback = function()
+		vim.cmd("loadview")
+	end,
+})
