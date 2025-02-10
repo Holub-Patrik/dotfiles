@@ -35,7 +35,9 @@ export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
 
 # starship command prompt
-prompt off
+if type "prompt" > /dev/null ; then
+	prompt off
+fi
 eval "$(starship init zsh)"
 
 # Set up fzf key bindings and fuzzy completion
@@ -48,6 +50,7 @@ alias ls="eza --icons"
 alias la="eza -a --icons"
 alias ll="eza -al --icons"
 alias lt="eza -a --tree --level=1 --icons"
+alias cleanup="sudo pacman -Rsn (pacman -Qtdq)"
 
 
 # BEGIN opam configuration

@@ -1,4 +1,4 @@
-local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd" }
+local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd", "ruff", "pyright" }
 local cmp_caps = require("cmp_nvim_lsp").default_capabilities()
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -16,6 +16,33 @@ mason_lsp_config.setup_handlers({
 			capabilities = cmp_caps,
 		})
 	end,
+	["pyright"] = function()
+		lsp_config.pyright.setup {
+			settings = {
+				pyright = {
+					disablleOrganizeImports = true,
+				},
+				python = {
+					ignore = { '*' },
+				}
+			}
+		}
+	end
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client == nil then
+			return
+		end
+		if client.name == 'ruff' then
+			-- Disable hover in favor of Pyright
+			client.server_capabilities.hoverProvider = false
+		end
+	end,
+	desc = 'LSP: Disable hover capability from Ruff',
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -56,8 +83,8 @@ cmp.setup({
 	sources = {
 		{ name = "path" },
 		{ name = "nvim_lsp", keyword_length = 1 },
-		{ name = "buffer", keyword_length = 3 },
-		{ name = "luasnip", keyword_length = 2 },
+		{ name = "buffer",   keyword_length = 3 },
+		{ name = "luasnip",  keyword_length = 2 },
 	},
 	window = {
 		documentation = cmp.config.window.bordered(),
