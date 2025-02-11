@@ -60,3 +60,5 @@ alias cleanup="sudo pacman -Rsn (pacman -Qtdq)"
 # This section can be safely removed at any time if needed.
 [[ ! -r '/home/holubpat/.opam/opam-init/init.zsh' ]] || source '/home/holubpat/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
+
+[ -f "/home/holubpat/.ghcup/env" ] && . "/home/holubpat/.ghcup/env" # ghcup-env
