@@ -9,10 +9,10 @@ add_newline = false
 format = "$symbol "
 success_symbol = '[|>](dimmed green)'
 error_symbol = '[|>](red)'
-vimcmd_symbol = '[<|](bold green)'
-vimcmd_replace_one_symbol = '[<|](bold purple)'
-vimcmd_replace_symbol = '[<|](bold purple)'
-vimcmd_visual_symbol = '[<|](bold yellow)'
+vimcmd_symbol = '[󱌬](bold green)'
+vimcmd_replace_one_symbol = '[󱌬](bold purple)'
+vimcmd_replace_symbol = '[󱌬](bold purple)'
+vimcmd_visual_symbol = '[󱌬](bold yellow)'
 
 [cmd_duration]
 min_time = 5_000
