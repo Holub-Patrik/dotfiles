@@ -22,6 +22,7 @@ return {
 			python = { "ruff" },
 			c = { lsp_format = "prefer" },
 			cpp = { lsp_format = "prefer" },
+			odin = { lsp_format = "prefer" },
 		},
 		default_format_opts = {
 			lsp_format = "fallback",
