@@ -4,10 +4,15 @@ SAVEHIST=1000
 setopt extendedglob nomatch menu_complete
 unsetopt autocd beep notify auto_list list_ambiguous 
 bindkey -e
+fpath+=($HOME/.zsh/pure)
 
 zstyle :compinstall filename '/home/holubpat/.zshrc'
 autoload -Uz compinit
 compinit
+
+# set prompt to pure => turn off starship
+autoload -U promptinit; promptinit
+prompt pure
 
 source $HOME/.antigen.zsh
 
@@ -28,17 +33,26 @@ antigen apply
 zstyle ':completion:*' menu select=-1
 bindkey '^[[Z' reverse-menu-complete
 
-# [ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)" &>/dev/null
+function clear-screen-and-scrollback() {
+  builtin echoti civis >"$TTY"
+  builtin print -rn -- $'\e[H\e[2J' >"$TTY"
+  builtin zle .reset-prompt
+  builtin zle -R
+  builtin print -rn -- $'\e[3J' >"$TTY"
+  builtin echoti cnorm >"$TTY"
+}
+zle -N clear-screen-and-scrollback
+bindkey '^L' clear-screen-and-scrollback
 
 # add the odin binary
 export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
 
 # starship command prompt
-if type "prompt" > /dev/null ; then
-	prompt off
-fi
-eval "$(starship init zsh)"
+# if type "prompt" > /dev/null ; then
+# 	prompt off
+# fi
+# eval "$(starship init zsh)"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
