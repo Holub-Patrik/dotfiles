@@ -28,6 +28,7 @@ mason_lsp_config.setup_handlers({
 			},
 		})
 	end,
+	["hls"] = function() end,
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
