@@ -40,7 +40,7 @@ background = #000000
 # Foreground color for the window.
 foreground = #ffffff
 
-cursor-opacity = 0.6
+cursor-opacity = 1
 
 # Valid values are:
 #   * `block`
@@ -62,7 +62,7 @@ mouse-hide-while-typing = true
 mouse-shift-capture = false
 
 mouse-scroll-multiplier = 0.3
-background-opacity = 0.4
+background-opacity = 0.6
 background-blur = false
 unfocused-split-opacity = 1.0
 wait-after-command = false
