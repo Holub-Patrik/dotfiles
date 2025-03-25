@@ -1,5 +1,7 @@
 {
     "diagnostics.globals": [
-        "vim"
+        "vim",
+        "fucntion",
+        "create_fterm"
     ]
 }
