@@ -1,3 +1,4 @@
+require("dap-python").setup("python3")
 local dap = require("dap")
 local dapui = require("dapui")
 dapui.setup()

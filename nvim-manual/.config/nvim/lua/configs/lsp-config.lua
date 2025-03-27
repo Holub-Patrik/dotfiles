@@ -64,9 +64,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
 		bufmap("n", "<F2>", "<cmd>lua require('renamer').rename()<cr>")
 		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>")
-		bufmap("n", "<leader>ll", "<cmd>lua vim.diagnostic.open_float()<cr>")
-		bufmap("n", "<leader>le", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
-		bufmap("n", "<leader>lE", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+		bufmap("n", "<leader>eh", "<cmd>lua vim.diagnostic.open_float()<cr>")
+		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
+		bufmap("n", "[e", "<cmd>lua vim.diagnostic.goto_next()<cr>")
 	end,
 })
 
@@ -74,8 +74,14 @@ require("luasnip.loaders.from_vscode").lazy_load()
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 
-local select_opts = { behavior = cmp.SelectBehavior.Select }
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
+local select_opts = { behavior = cmp.SelectBehavior.Select }
+local rounded = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+
+-- limit menu height
+vim.o.pumheight = 15
 cmp.setup({
 	snippet = {
 		expand = function(args)
@@ -89,10 +95,12 @@ cmp.setup({
 		{ name = "luasnip", keyword_length = 2 },
 	},
 	window = {
-		documentation = cmp.config.window.bordered(),
+		completion = cmp.config.window.bordered({ border = rounded }),
+		documentation = cmp.config.window.bordered({ border = rounded }),
 	},
 	formatting = {
 		fields = { "menu", "abbr", "kind" },
+		expandable_indicator = true,
 		format = function(entry, item)
 			local menu_icon = {
 				nvim_lsp = ">",

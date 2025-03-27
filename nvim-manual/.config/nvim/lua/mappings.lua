@@ -1,6 +1,6 @@
 local builtin = require("telescope.builtin")
 local oil = require("oil")
-local term = require('configs.fterm')
+local term = require("configs.fterm")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
