@@ -8,6 +8,7 @@ local M = {
 		select_signature_key = "<C-n>",
 		hint_enable = false,
 		hint_prefix = "",
+		extra_trigger_chars = { "(", "," },
 		hint_inline = function()
 			return true
 		end,
