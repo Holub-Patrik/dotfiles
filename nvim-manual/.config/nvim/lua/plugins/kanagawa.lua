@@ -2,7 +2,7 @@ local M = {
 	"rebelot/kanagawa.nvim",
 	lazy = false,
 	config = function()
-		require('kanagawa').setup({
+		require("kanagawa").setup({
 			compile = true,
 			undercurl = true,
 			commentStyle = { italic = true },
@@ -15,7 +15,7 @@ local M = {
 			terminalColors = true,
 			colors = {
 				palette = {
-					sumiInk0 = "none"
+					sumiInk0 = "none",
 				},
 				theme = {
 					wave = {},
@@ -24,19 +24,24 @@ local M = {
 					all = {
 						ui = {
 							bg_gutter = "none",
-						}
-					}
+						},
+					},
 				},
 			},
 			theme = "dragon",
 			background = {
 				dark = "wave",
-				light = "lotus"
+				light = "lotus",
 			},
+			overrides = function()
+				return {
+					-- CursorLine = { bg = "None" },
+				}
+			end,
 		})
 
 		vim.cmd("colorscheme kanagawa")
-	end
+	end,
 }
 
 return M
