@@ -22,6 +22,8 @@ vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldtext = require("configs.foldtext")
 
+vim.o.guifont = "monaspace_neon:h12"
+
 vim.api.nvim_create_autocmd("BufWinLeave", {
 	pattern = "*.*",
 	callback = function()

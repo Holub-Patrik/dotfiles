@@ -54,13 +54,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.keymap.set(mode, lhs, rhs, opts)
 		end
 
-		bufmap("n", "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>")
+		bufmap("n", "<leader>lh", '<cmd>lua vim.lsp.buf.hover({border = "rounded"})<cr>')
 		bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
 		bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
 		bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
 		bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
 		bufmap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>")
-		bufmap("n", "<leader>lH", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+		bufmap("n", "<leader>lH", '<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>')
 		-- bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
 		bufmap("n", "<F2>", "<cmd>lua require('renamer').rename()<cr>")
 		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>")
@@ -73,9 +73,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("luasnip.loaders.from_vscode").lazy_load()
 local cmp = require("cmp")
 local luasnip = require("luasnip")
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
 local select_opts = { behavior = cmp.SelectBehavior.Select }
 local rounded = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
