@@ -16,6 +16,24 @@ mason_lsp_config.setup_handlers({
 			capabilities = cmp_caps,
 		})
 	end,
+	["clangd"] = function()
+		lsp_config.clangd.setup({
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--clang-tidy",
+				"--cross-file-rename",
+				"--header-insertion=iwyu",
+			},
+			capabilities = cmp_caps,
+			init_options = {
+				clangdFileStatus = true, -- Provides information about activity on clangd’s per-file worker thread
+				usePlaceholders = true,
+				completeUnimported = true,
+				semanticHighlighting = true,
+			},
+		})
+	end,
 	["pyright"] = function()
 		lsp_config.pyright.setup({
 			settings = {
@@ -88,8 +106,8 @@ cmp.setup({
 	sources = {
 		{ name = "path" },
 		{ name = "nvim_lsp", keyword_length = 1 },
-		{ name = "buffer", keyword_length = 3 },
-		{ name = "luasnip", keyword_length = 2 },
+		{ name = "buffer",   keyword_length = 3 },
+		{ name = "luasnip",  keyword_length = 2 },
 	},
 	window = {
 		completion = cmp.config.window.bordered({ border = rounded }),
