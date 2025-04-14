@@ -26,12 +26,6 @@ mason_lsp_config.setup_handlers({
 				"--header-insertion=iwyu",
 			},
 			capabilities = cmp_caps,
-			init_options = {
-				clangdFileStatus = true, -- Provides information about activity on clangd’s per-file worker thread
-				usePlaceholders = true,
-				completeUnimported = true,
-				semanticHighlighting = true,
-			},
 		})
 	end,
 	["pyright"] = function()
