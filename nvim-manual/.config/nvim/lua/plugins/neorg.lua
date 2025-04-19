@@ -1,3 +1,5 @@
+local base_dir = "~/neorg-notes/"
+
 local M = {
 	"nvim-neorg/neorg",
 	lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
@@ -10,7 +12,8 @@ local M = {
 				["core.dirman"] = {
 					config = {
 						workspaces = {
-							notes = "~/notes",
+							notes = base_dir .. "notes",
+							school = base_dir .. "school",
 						},
 					},
 				},

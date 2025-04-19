@@ -76,3 +76,5 @@ alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 # END opam configuration
 
 [ -f "/home/holubpat/.ghcup/env" ] && . "/home/holubpat/.ghcup/env" # ghcup-env
+
+export PHP_CS_FIXER_IGNORE_ENV=true
