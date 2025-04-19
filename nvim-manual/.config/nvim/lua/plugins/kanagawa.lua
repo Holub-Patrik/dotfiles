@@ -36,6 +36,7 @@ local M = {
 			overrides = function()
 				return {
 					-- CursorLine = { bg = "None" },
+					-- Folded = { bg = "None" },
 				}
 			end,
 		})

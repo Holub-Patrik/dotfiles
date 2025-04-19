@@ -37,3 +37,8 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 		vim.cmd("silent! loadview")
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+	pattern = { "*.norg" },
+	command = "set conceallevel=3",
+})
