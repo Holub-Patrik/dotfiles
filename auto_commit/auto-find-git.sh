@@ -8,6 +8,8 @@ push() {
 	git push
 }
 
+# some comment
+
 for loc in $(find ~/ -type d -name ".git" 2>/dev/null | 
 	grep -v ".*/\..*\.git" | 
 	grep -v "find.*" | 
