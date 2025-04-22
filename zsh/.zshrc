@@ -22,7 +22,7 @@ antigen bundle git
 # antigen bundle pip
 # antigen bundle lein
 # antigen bundle command-not-found
-antigen bundle ssh-agent
+# antigen bundle ssh-agent
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -78,3 +78,4 @@ alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 [ -f "/home/holubpat/.ghcup/env" ] && . "/home/holubpat/.ghcup/env" # ghcup-env
 
 export PHP_CS_FIXER_IGNORE_ENV=true
+
