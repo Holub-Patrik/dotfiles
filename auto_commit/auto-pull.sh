@@ -8,14 +8,18 @@ pull() {
 
 
 for repo in ${!git_repos[@]}; do
-	echo -e "\033[1m\033[38;5;40mPulling: ${git_repos[$repo]}\033[0m\n"
 	cd ${git_repos[$repo]}
-	pull
+	if output=$(git status --porcelain) && ! [ -z "$output" ]; then
+		echo -e "\033[1m\033[38;5;40mPulling: ${git_repos[$repo]}\033[0m\n"
+		pull
+	fi
 done
 
 for repo_loc in "$@"
 do
-	echo -e "\033[1m\033[38;5;40mPulling: $repo_loc\033[0m\n"
 	cd "$repo_loc"
-	pull
+	if output=$(git status --porcelain) && ! [ -z "$output" ]; then
+		echo -e "\033[1m\033[38;5;40mPulling: $repo_loc\033[0m\n"
+		pull
+	fi
 done
