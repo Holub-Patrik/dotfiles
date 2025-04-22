@@ -79,3 +79,8 @@ alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 
 export PHP_CS_FIXER_IGNORE_ENV=true
 
+gitCredManager=$(git config --global credential.cacheOptions)
+
+if ! [ "$gitCredManager" = "cache" ]; then
+	git config --global credential.cacheOptions cache
+fi
