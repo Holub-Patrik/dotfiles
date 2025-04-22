@@ -60,10 +60,10 @@ source <(fzf --zsh)
 # the fuck ?
 eval "$(thefuck --alias fuck)"
 
-alias ls="eza --icons"
-alias la="eza -a --icons"
-alias ll="eza -al --icons"
-alias lt="eza -a --tree --level=1 --icons"
+alias ls="eza --icons=always"
+alias la="eza -a --icons=always"
+alias ll="eza -al --icons=always"
+alias lt="eza -a --tree --icons=always"
 alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 
 
