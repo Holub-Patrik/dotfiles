@@ -22,7 +22,7 @@ antigen bundle git
 # antigen bundle pip
 # antigen bundle lein
 # antigen bundle command-not-found
-# antigen bundle ssh-agent
+antigen bundle ssh-agent
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -78,18 +78,6 @@ alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 [ -f "/home/holubpat/.ghcup/env" ] && . "/home/holubpat/.ghcup/env" # ghcup-env
 
 export PHP_CS_FIXER_IGNORE_ENV=true
-
-gitCredManager=$(git config --global credential.credentialStore)
-
-if ! [ "$gitCredManager" = "cache" ]; then
-	git config --global credential.credentialStore cache
-fi
-
-gitCredManager=$(git config --global credential.cacheOptions)
-
-if ! [ "$gitCredManager" = "--timeout 900" ]; then
-	git config --global credential.cacheOptions "--timeout 900"
-fi
 
 # Created by `pipx` on 2025-04-24 15:30:38
 export PATH="$PATH:/home/holubpat/.local/bin"
