@@ -90,3 +90,6 @@ gitCredManager=$(git config --global credential.cacheOptions)
 if ! [ "$gitCredManager" = "--timeout 900" ]; then
 	git config --global credential.cacheOptions "--timeout 900"
 fi
+
+# Created by `pipx` on 2025-04-24 15:30:38
+export PATH="$PATH:/home/holubpat/.local/bin"
