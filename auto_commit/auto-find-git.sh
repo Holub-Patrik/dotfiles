@@ -1,3 +1,5 @@
+ignore=("$HOME/Arch-Hyprland/")
+
 pull() {
 	git pull
 }
@@ -16,6 +18,14 @@ for loc in $(find ~/ -type d -name ".git" 2>/dev/null |
 	grep -v ".*/\..*\.git" | 
 	grep -v "find.*" | 
 	sed -e 's/.git//'); do
+
+	for should_ignore in "${ignore[@]}"
+	do
+		if [ "$loc" = "$should_ignore" ]; then
+			echo -e "\033[38;5;40mSkipping:\033[0m"
+			continue
+		fi
+	done
 	
 	echo -e "\033[38;5;40mChecking: ${loc}\033[0m"
 	cd "$loc"
@@ -24,7 +34,7 @@ for loc in $(find ~/ -type d -name ".git" 2>/dev/null |
 		echo -e "\033[38;5;220mWorking Tree isn't clean\033[0m\n"
 		git status
 
-		echo -n -e "\033[38;5;135mInteract with: ${loc}? [y|n]:\033[0m "
+		echo -n -e "\033[38;5;135mInteract with: ${loc}? [y|N]:\033[0m "
 		read -p "" interaction
 		interaction=${interaction:-n}
 
