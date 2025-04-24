@@ -26,7 +26,7 @@ do
 	done
 done
 
-for loc in "${actual_locs}"
+for loc in "${actual_locs[@]}"
 do
 
 	echo -e "\033[38;5;40mChecking: ${loc}\033[0m"
