@@ -12,21 +12,23 @@ push() {
 	git push
 }
 
-# some comment
-
-for loc in $(find ~/ -type d -name ".git" 2>/dev/null | 
+initial_locs=$(find ~/ -type d -name ".git" 2>/dev/null | 
 	grep -v ".*/\..*\.git" | 
 	grep -v "find.*" | 
-	sed -e 's/.git//'); do
+	sed -e 's/.git//')
 
-	for should_ignore in "${ignore[@]}"
+actual_locs=()
+for should_ignore in "${ignore[@]}" 
+do
+	for initial_loc in "${initial_locs[@]}"
 	do
-		if [ "$loc" = "$should_ignore" ]; then
-			echo -e "\033[38;5;40mSkipping:\033[0m"
-			continue
-		fi
+		actual_locs+=($(grep "$should_ignore" -v <<< "$initial_loc"))
 	done
-	
+done
+
+for loc in "${actual_locs}"
+do
+
 	echo -e "\033[38;5;40mChecking: ${loc}\033[0m"
 	cd "$loc"
 	
