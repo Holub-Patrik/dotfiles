@@ -88,5 +88,5 @@ fi
 gitCredManager=$(git config --global credential.cacheOptions)
 
 if ! [ "$gitCredManager" = "--timeout 900" ]; then
-	git config --global credential.credentialStore "--timeout 900"
+	git config --global credential.cacheOptions "--timeout 900"
 fi
