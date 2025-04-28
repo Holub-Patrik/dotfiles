@@ -1,16 +1,5 @@
-ignore=("$HOME/Arch-Hyprland/")
-
-pull() {
-	git pull
-}
-
-push() {
-	git add ./
-	read -p "Please enter a commit msg: " msg
-	msg=${msg:- "Holub Patrik auto-commit"}
-	git commit -m "$msg"
-	git push
-}
+#!/bin/bash
+ignore=("$HOME/Arch-Hyprland/" "$HOME/Odin/")
 
 initial_locs=$(find ~/ -type d -name ".git" 2>/dev/null | 
 	grep -v ".*/\..*\.git" | 
@@ -28,39 +17,45 @@ done
 
 for loc in "${actual_locs[@]}"
 do
-
 	echo -e "\033[38;5;40mChecking: ${loc}\033[0m"
 	cd "$loc"
-	
-	if output=$(git status --porcelain) && ! [ -z "$output" ]; then
-		echo -e "\033[38;5;220mWorking Tree isn't clean\033[0m\n"
-		git status
+	git fetch --quiet --no-tags --recurse-submodules=no
 
-		echo -n -e "\033[38;5;135mInteract with: ${loc}? [y|N]:\033[0m "
+	local_head=$(git rev-parse @)
+	remote_head=$(git rev-parse @{u})
+	base_head=($(git rev-parse @ @{u}))
+
+	uncommited_changes=$(git status --porcelain)
+	echo "$uncommited_changes"
+
+	if [ -n "${uncommited_changes}" ]; then 
+		echo -n -e "\033[38;5;135mWorking tree not clean. Commit and push? [y|N]: "
 		read -p "" interaction
 		interaction=${interaction:-n}
-
 		if [ "$interaction" = "y" ]; then
-
-			read -p "[P]ull/[p]ush? " command
-			command=${command:-P}
-
-			if [ "$command" = "P" ]; then
-				pull
-
-			elif [ "$command" = "p" ]; then
-				push
-
-			else
-				echo "Invalid command"
-			fi
-
-		elif [ "$interaction" = "n" ]; then
-			echo "continuing..."
-		else
-			echo "Invalid interaction"
+			git add ./
+			read -p "Please enter commit msg: " commit_msg
+			git commit -m "$commit_msg"
+			push
 		fi
-
+	elif [ "$local_head" = "$remote_head" ]; then
+		# maybe eventually, for now leaving empty
+		echo -n ""
+	elif [ "$local_head" = "${base_head[0]}" ]; then
+		echo -n -e "\033[38;5;135mPull: ${loc}? [y|N]:\033[0m "
+		read -p "" interaction
+		interaction=${interaction:-n}
+		if [ "$interaction" = "y" ]; then
+			git pull
+		fi
+	elif [ "$remote_head" = "${base_head[1]}" ]; then
+		echo -n -e "\033[38;5;135mPush: ${loc}? [y|N]:\033[0m "
+		read -p "" interaction
+		interaction=${interaction:-n}
+		if [ "$interaction" = "y" ]; then
+			git push
+		fi
+	else
+		echo -e "\033[38;5;196mDiverged cannot simply pull/push, continuing"
 	fi
-		
 done
