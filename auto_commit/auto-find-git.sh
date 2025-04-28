@@ -39,7 +39,7 @@ do
 			git add ./
 			read -p "Please enter commit msg: " commit_msg
 			git commit -m "$commit_msg"
-			push
+			git push
 		fi
 	elif [ "$local_head" = "$remote_head" ]; then
 		# maybe eventually, for now leaving empty
