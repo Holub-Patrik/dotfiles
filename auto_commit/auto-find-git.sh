@@ -1,21 +1,25 @@
 #!/bin/bash
-ignore=("$HOME/Arch-Hyprland/" "$HOME/Odin/")
+ignore=()
+ignore+=("$HOME/Arch-Hyprland/")
+ignore+=("$HOME/Odin/")
 
-initial_locs=$(find ~/ -type d -name ".git" 2>/dev/null | 
+locs=$(find ~/ -type d -name ".git" 2>/dev/null | 
 	grep -v ".*/\..*\.git" | 
 	grep -v "find.*" | 
 	sed -e 's/.git//')
 
-actual_locs=()
+filtered_locs=()
 for should_ignore in "${ignore[@]}" 
 do
-	for initial_loc in "${initial_locs[@]}"
+	for loc in "${locs[@]}"
 	do
-		actual_locs+=($(grep "$should_ignore" -v <<< "$initial_loc"))
+		filtered_locs+=($(grep "$should_ignore" -v <<< "$loc"))
 	done
+	locs=("${filtered_locs[@]}")
+	filtered_locs=()
 done
 
-for loc in "${actual_locs[@]}"
+for loc in "${locs[@]}"
 do
 	echo -e "\033[38;5;40mChecking: ${loc}\033[0m"
 	cd "$loc"
@@ -26,7 +30,6 @@ do
 	base_head=($(git rev-parse @ @{u}))
 
 	uncommited_changes=$(git status --porcelain)
-	echo "$uncommited_changes"
 
 	if [ -n "${uncommited_changes}" ]; then 
 		echo -n -e "\033[38;5;135mWorking tree not clean. Commit and push? [y|N]: "
