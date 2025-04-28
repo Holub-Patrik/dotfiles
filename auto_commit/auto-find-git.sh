@@ -32,7 +32,7 @@ do
 	uncommited_changes=$(git status --porcelain)
 
 	if [ -n "${uncommited_changes}" ]; then 
-		echo -n -e "\033[38;5;135mWorking tree not clean. Commit and push? [y|N]: "
+		echo -n -e "\033[38;5;135mWorking tree not clean. Commit and push? [y|N]: \033[0m"
 		read -p "" interaction
 		interaction=${interaction:-n}
 		if [ "$interaction" = "y" ]; then
