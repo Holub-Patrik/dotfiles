@@ -25,8 +25,8 @@ do
 	cd "$loc"
 	git fetch --quiet --no-tags --recurse-submodules=no
 
-	local_head=$(git rev-parse @)
-	remote_head=$(git rev-parse @{u})
+	remote_head=$(git rev-parse @)
+  local_head=$(git rev-parse @{u})
 	base_head=($(git rev-parse @ @{u}))
 
 	uncommited_changes=$(git status --porcelain)
@@ -42,16 +42,15 @@ do
 			git push
 		fi
 	elif [ "$local_head" = "$remote_head" ]; then
-		# maybe eventually, for now leaving empty
-		echo -n ""
-	elif [ "$local_head" = "${base_head[1]}" ]; then
+		echo "Repo is up to date"
+	elif [ "$local_head" = "${base_head[0]}" ]; then
 		echo -n -e "\033[38;5;135mPull: ${loc}? [y|N]:\033[0m "
 		read -p "" interaction
 		interaction=${interaction:-n}
 		if [ "$interaction" = "y" ]; then
 			git pull
 		fi
-	elif [ "$remote_head" = "${base_head[2]}" ]; then
+	elif [ "$local_head" = "${base_head[1]}" ]; then
 		echo -n -e "\033[38;5;135mPush: ${loc}? [y|N]:\033[0m "
 		read -p "" interaction
 		interaction=${interaction:-n}
