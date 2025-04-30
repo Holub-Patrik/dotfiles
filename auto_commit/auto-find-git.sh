@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ignore=()
 ignore+=("$HOME/Arch-Hyprland/")
 ignore+=("$HOME/Odin/")
@@ -25,9 +25,9 @@ do
 	cd "$loc"
 	git fetch --quiet --no-tags --recurse-submodules=no
 
-	remote_head=$(git rev-parse @)
-  local_head=$(git rev-parse @{u})
-	base_head=($(git rev-parse @ @{u}))
+  LOCAL=$(git rev-parse @)
+	REMOTE=$(git rev-parse @{u})
+	BASE=$(git merge-base @ @{u})
 
 	uncommited_changes=$(git status --porcelain)
 
@@ -41,16 +41,16 @@ do
 			git commit -m "$commit_msg"
 			git push
 		fi
-	elif [ "$local_head" = "$remote_head" ]; then
+	elif [ "$LOCAL" = "$REMOTE" ]; then
 		echo " | Up to date"
-	elif [ "$local_head" = "${base_head[0]}" ]; then
+	elif [ "$LOCAL" = "$BASE" ]; then
 		echo -n -e "\n\033[38;5;135mPull: ${loc}? [y|N]:\033[0m "
 		read -p "" interaction
 		interaction=${interaction:-n}
 		if [ "$interaction" = "y" ]; then
 			git pull
 		fi
-	elif [ "$local_head" = "${base_head[1]}" ]; then
+	elif [ "$REMOTE" = "$BASE" ]; then
 		echo -n -e "\n\033[38;5;135mPush: ${loc}? [y|N]:\033[0m "
 		read -p "" interaction
 		interaction=${interaction:-n}
@@ -58,6 +58,6 @@ do
 			git push
 		fi
 	else
-		echo -e "\033[38;5;196mDiverged\033[0m"
+		echo -e " | \033[38;5;196mDiverged\033[0m"
 	fi
 done
