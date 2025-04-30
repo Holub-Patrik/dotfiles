@@ -61,3 +61,5 @@ do
 		echo -e "\033[38;5;196mDiverged\033[0m"
 	fi
 done
+
+#testing another script
