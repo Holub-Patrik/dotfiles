@@ -1,4 +1,4 @@
-local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd", "ruff", "pyright" }
+local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd", "ruff", "basedpyright" }
 local cmp_caps = require("cmp_nvim_lsp").default_capabilities()
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -28,10 +28,10 @@ mason_lsp_config.setup_handlers({
 			capabilities = cmp_caps,
 		})
 	end,
-	["pyright"] = function()
-		lsp_config.pyright.setup({
+	["basedpyright"] = function()
+		lsp_config.basedpyright.setup({
 			settings = {
-				pyright = {
+				basedpyright = {
 					disablleOrganizeImports = true,
 				},
 				python = {
