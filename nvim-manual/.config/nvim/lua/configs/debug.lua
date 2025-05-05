@@ -23,19 +23,16 @@ dap.listeners.before.event_exited.dapui_config = function()
 	dapui.close()
 end
 
-dap.adapters.codelldb = {
-	type = "server",
-	port = "${port}",
-	executable = {
-		command = "/usr/bin/codelldb",
-		args = { "--port", "${port}" },
-	},
+dap.adapters.lldb = {
+	type = "executable",
+	command = "/usr/bin/lldb-dap",
+	name = "lldb",
 }
 
 dap.configurations.cpp = {
 	{
 		name = "Launch file",
-		type = "codelldb",
+		type = "lldb",
 		request = "launch",
 		program = function()
 			local file
