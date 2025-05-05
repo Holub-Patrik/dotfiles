@@ -29,6 +29,49 @@ dap.adapters.lldb = {
 	name = "lldb",
 }
 
+dap.configurations.rust = {
+	{
+		name = "Launch file",
+		type = "lldb",
+		request = "launch",
+		program = function()
+			local file
+			vim.ui.input({
+				prompt = "Path to executable: " .. vim.fn.getcwd() .. "/",
+			}, function(str)
+				file = vim.fn.getcwd() .. "/" .. str
+			end)
+			return file
+		end,
+		args = function()
+			local args
+			vim.ui.input({
+				prompt = "Arguments to use: ",
+			}, function(str)
+				args = vim.split(str, " ")
+			end)
+			return args
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = false,
+		initCommands = function()
+			-- Find out where to look for the pretty printer Python module.
+			local rustc_sysroot = vim.fn.trim(vim.fn.system("rustc --print sysroot"))
+			assert(
+				vim.v.shell_error == 0,
+				"failed to get rust sysroot using `rustc --print sysroot`: " .. rustc_sysroot
+			)
+			local script_file = rustc_sysroot .. "/lib/rustlib/etc/lldb_lookup.py"
+			local commands_file = rustc_sysroot .. "/lib/rustlib/etc/lldb_commands"
+
+			return {
+				([[!command script import '%s']]):format(script_file),
+				([[command source '%s']]):format(commands_file),
+			}
+		end,
+	},
+}
+
 dap.configurations.cpp = {
 	{
 		name = "Launch file",
@@ -58,4 +101,3 @@ dap.configurations.cpp = {
 }
 
 dap.configurations.c = dap.configurations.cpp
-dap.configurations.rust = dap.configurations.cpp
