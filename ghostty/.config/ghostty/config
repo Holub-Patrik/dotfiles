@@ -1,17 +1,8 @@
-# The font families to use.
-#     ghostty +list-fonts
-
 font-family = Monaspace Neon
-
 font-style = default
 font-style-bold = default
 font-style-italic = default
 font-style-bold-italic = default
-
-# Control whether Ghostty should synthesize a style if the requested style is
-# not available in the specified font-family.
-
-# font-synthetic-style = bold,italic,bold-italic
 
 font-feature = calt
 font-feature = ss01
@@ -26,39 +17,15 @@ font-feature = liga
 
 font-size = 12
 
-# Draw fonts with a thicker stroke, if supported. This is only supported
-# currently on macOS.
-font-thicken = false
-grapheme-width-method = unicode
-
-# To see a list of available themes, run `ghostty +list-themes`.
 theme = Symfonic 
-
-# Background color for the window.
-background = #000000
-
-# Foreground color for the window.
-foreground = #ffffff
 
 cursor-opacity = 1
 
-# Valid values are:
-#   * `block`
-#   * `bar`
-#   * `underline`
-#   * `block_hollow`
 cursor-style = underline
 cursor-click-to-move = true
 cursor-color = #ffffff
 mouse-hide-while-typing = true
 
-# Valid values are:
-# 
-#   * `true`
-#   * `false`
-#   * `always`
-#   * `never`
-# 
 mouse-shift-capture = false
 
 mouse-scroll-multiplier = 0.3
@@ -83,32 +50,12 @@ keybind = alt+down=goto_split:bottom
 
 window-padding-x = 2
 window-padding-y = 2
-window-vsync = true
 window-inherit-font-size = false
 
 window-decoration = false
 window-theme = auto
 macos-titlebar-style = transparent
 gtk-titlebar = false
-
-# The colorspace to use for the terminal window. The default is `srgb` but
-# this can also be set to `display-p3` to use the Display P3 colorspace.
-# 
-# Changing this value at runtime will only affect new windows.
-# 
-# This setting is only supported on macOS.
-window-colorspace = srgb
-
-# Resize the window in discrete increments of the focused surface's cell size.
-# If this is disabled, surfaces are resized in pixel increments. Currently
-# only supported on macOS.
-window-step-resize = false
-window-new-tab-position = current
-
-resize-overlay = after-first
-resize-overlay-position = center
-resize-overlay-duration = 750ms
-focus-follows-mouse = false
 
 clipboard-read = allow
 clipboard-write = allow
