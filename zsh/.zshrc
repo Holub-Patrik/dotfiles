@@ -34,12 +34,8 @@ zstyle ':completion:*' menu select=-1
 bindkey '^[[Z' reverse-menu-complete
 
 function clear-screen-and-scrollback() {
-  builtin echoti civis >"$TTY"
-  builtin print -rn -- $'\e[H\e[2J' >"$TTY"
-  builtin zle .reset-prompt
-  builtin zle -R
-  builtin print -rn -- $'\e[3J' >"$TTY"
-  builtin echoti cnorm >"$TTY"
+  clear && printf '\e[3J'
+  zle && zle .reset-prompt && zle -R
 }
 zle -N clear-screen-and-scrollback
 bindkey '^L' clear-screen-and-scrollback
