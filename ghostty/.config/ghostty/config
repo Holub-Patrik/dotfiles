@@ -1,8 +1,4 @@
 font-family = Monaspace Neon
-font-style = default
-font-style-bold = default
-font-style-italic = default
-font-style-bold-italic = default
 
 font-feature = calt
 font-feature = ss01
@@ -22,22 +18,12 @@ theme = Symfonic
 cursor-opacity = 1
 
 cursor-style = underline
-cursor-click-to-move = true
 cursor-color = #ffffff
-mouse-hide-while-typing = true
 
-mouse-shift-capture = false
-
-mouse-scroll-multiplier = 0.3
 background-opacity = 0.6
 background-blur = false
-unfocused-split-opacity = 1.0
-wait-after-command = false
-abnormal-command-exit-runtime = 250
-scrollback-limit = 10000000
-link-url = true
-fullscreen = false
-working-directory = `inherit`
+unfocused-split-opacity = 1
+working-directory = inherit
 
 keybind = ctrl+shift+tab=next_tab
 keybind = ctrl+|=new_split:right
@@ -53,27 +39,19 @@ window-padding-y = 2
 window-inherit-font-size = false
 
 window-decoration = false
-window-theme = auto
-macos-titlebar-style = transparent
-gtk-titlebar = false
+gtk-tabs-location = bottom
+gtk-wide-tabs = false
+gtk-custom-css = ./tabs.css
 
 clipboard-read = allow
 clipboard-write = allow
-clipboard-trim-trailing-spaces = true
-clipboard-paste-protection = true
-clipboard-paste-bracketed-safe = true
-image-storage-limit = 320000000
 click-repeat-interval = 0
-quit-after-last-window-closed = true
-initial-window = true
-quick-terminal-position = top
-quick-terminal-screen = main
-quick-terminal-animation-duration = 0.2
+
+confirm-close-surface = false
+
 shell-integration = detect
-shell-integration-features = cursor,no-sudo,title
-osc-color-report-format = 16-bit
-linux-cgroup = single-instance
-gtk-single-instance = desktop
-bold-is-bright = false
+shell-integration-features = no-cursor,sudo,title
+
+
 term = xterm-ghostty
 auto-update = off

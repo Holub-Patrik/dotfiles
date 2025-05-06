@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 config.font = wezterm.font({
-	family = "MonaspiceNe Nerd Font",
+	family = "Monaspace Neon",
 	harfbuzz_features = {
 		"calt=1",
 		"liga=1",
