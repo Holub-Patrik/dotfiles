@@ -20,6 +20,7 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldtext = require("configs.foldtext")
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
@@ -27,11 +28,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client and client:supports_method("textDocument/foldingRange") then
 			local win = vim.api.nvim_get_current_win()
 			vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+			vim.wo[win][0].foldtext = vim.fn.foldtext()
 		end
 	end,
 })
 
-vim.o.foldtext = require("configs.foldtext")
 
 vim.o.guifont = "monaspace_neon:h12"
 

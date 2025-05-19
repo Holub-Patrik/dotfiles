@@ -19,22 +19,22 @@ function vim.find_files_from_project_git_root()
 	require("telescope.builtin").find_files(opts)
 end
 
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
-vim.keymap.set("n", "<leader>fG", vim.find_files_from_project_git_root, {})
+vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep search" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
+vim.keymap.set("n", "<leader>fG", vim.find_files_from_project_git_root, { desc = "Find files using git" })
 
-vim.keymap.set("n", "<leader>cc", "<cmd>update<cr><cmd>VimtexCompile<cr>")
+vim.keymap.set("n", "<leader>cc", "<cmd>update<cr><cmd>VimtexCompile<cr>", { desc = "Compile tex file" })
 
-vim.keymap.set("n", "<leader>ft", oil.toggle_float, {})
+vim.keymap.set("n", "<leader>ft", oil.toggle_float, { desc = "Open file tree" })
 vim.keymap.set("n", ";", ":", {})
-vim.keymap.set("n", "<leader><leader>x", "i<esc>", {})
-vim.keymap.set("n", "<leader><leader>c", "i󰄬<esc>", {})
+vim.keymap.set("n", "<leader><leader>x", "i<esc>", { desc = "Place an x mark" })
+vim.keymap.set("n", "<leader><leader>c", "i󰄬<esc>", { desc = "Place a check mark" })
 vim.keymap.set("t", "<esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "<leader>ot", function()
 	term.open_term()
-end, {})
+end, { desc = "Open floating terminal" })
 
 vim.api.nvim_create_autocmd(
 	"FileType", {

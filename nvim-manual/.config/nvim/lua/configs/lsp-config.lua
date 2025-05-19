@@ -61,24 +61,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp Actions",
 	callback = function()
-		local bufmap = function(mode, lhs, rhs)
+		local bufmap = function(mode, lhs, rhs, given_opts)
 			local opts = { buffer = true }
+			vim.tbl_deep_extend("keep", opts, given_opts)
 			vim.keymap.set(mode, lhs, rhs, opts)
 		end
 
-		bufmap("n", "<leader>lh", '<cmd>lua vim.lsp.buf.hover({border = "rounded"})<cr>')
-		bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
-		bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
-		bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
-		bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
-		bufmap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>")
-		bufmap("n", "<leader>lH", '<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>')
+		bufmap("n", "<leader>lh", '<cmd>lua vim.lsp.buf.hover({border = "rounded"})<cr>', { desc = "Hover" })
+		bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
+		bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Declaration" })
+		bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
+		bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type definition" })
+		bufmap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
+		bufmap("n", "<leader>lH", '<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>',
+			{ desc = "Signature help" })
 		-- bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
-		bufmap("n", "<F2>", "<cmd>lua require('renamer').rename()<cr>")
-		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>")
-		bufmap("n", "<leader>eh", "<cmd>lua vim.diagnostic.open_float()<cr>")
-		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
-		bufmap("n", "[e", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+		bufmap("n", "<F2>", "<cmd>lua require('renamer').rename()<cr>", { desc = "Rename" })
+		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code action" })
+		bufmap("n", "<leader>eh", "<cmd>lua vim.diagnostic.open_float()<cr>", { desc = "Open float" })
+		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Goto next error" })
+		bufmap("n", "[e", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "Goto prev error" })
 	end,
 })
 
@@ -101,8 +103,8 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "neorg" },
 		{ name = "nvim_lsp", keyword_length = 1 },
-		{ name = "buffer", keyword_length = 3 },
-		{ name = "luasnip", keyword_length = 2 },
+		{ name = "buffer",   keyword_length = 3 },
+		{ name = "luasnip",  keyword_length = 2 },
 	},
 	window = {
 		completion = cmp.config.window.bordered({ border = rounded }),

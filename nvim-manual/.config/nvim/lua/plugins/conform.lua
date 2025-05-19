@@ -20,8 +20,8 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "ruff_format" },
-			c = { lsp_format = "prefer" },
-			cpp = { lsp_format = "prefer" },
+			c = { "clangd" },
+			cpp = { "clangd" },
 			odin = { lsp_format = "prefer" },
 		},
 		default_format_opts = {
