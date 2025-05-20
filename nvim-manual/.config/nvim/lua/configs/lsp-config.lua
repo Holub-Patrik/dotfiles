@@ -1,46 +1,28 @@
 local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd", "ruff", "basedpyright" }
-local cmp_caps = require("cmp_nvim_lsp").default_capabilities()
 
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-local mason_lsp_config = require("mason-lspconfig")
-local lsp_config = require("lspconfig")
-
-mason_lsp_config.setup({
+require("mason-lspconfig").setup({
 	ensure_installed = ensured_servers,
 })
 
-mason_lsp_config.setup_handlers({
-	function(server)
-		lsp_config[server].setup({
-			capabilities = cmp_caps,
-		})
-	end,
-	["clangd"] = function()
-		lsp_config.clangd.setup({
-			cmd = {
-				"clangd",
-				"--background-index",
-				"--clang-tidy",
-				"--cross-file-rename",
-				"--header-insertion=iwyu",
-			},
-			capabilities = cmp_caps,
-		})
-	end,
-	["basedpyright"] = function()
-		lsp_config.basedpyright.setup({
-			settings = {
-				basedpyright = {
-					disablleOrganizeImports = true,
-				},
-				python = {
-					ignore = { "*" },
-				},
-			},
-		})
-	end,
-	["hls"] = function() end,
+vim.lsp.config('clangd', {
+	cmd = {
+		"clangd",
+		"--background-index",
+		"--clang-tidy",
+		"--cross-file-rename",
+		"--header-insertion=iwyu",
+	}
+})
+
+vim.lsp.config("basedpyright", {
+	settings = {
+		basedpyright = {
+			disableOrganizeImports = true,
+		},
+		python = {
+			ignore = { "*" },
+		},
+	},
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -82,71 +64,4 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Goto next error" })
 		bufmap("n", "[e", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "Goto prev error" })
 	end,
-})
-
-require("luasnip.loaders.from_vscode").lazy_load()
-local cmp = require("cmp")
-local luasnip = require("luasnip")
-
-local select_opts = { behavior = cmp.SelectBehavior.Select }
-local rounded = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
-
--- limit menu height
-vim.o.pumheight = 15
-cmp.setup({
-	snippet = {
-		expand = function(args)
-			luasnip.lsp_expand(args.body)
-		end,
-	},
-	sources = {
-		{ name = "path" },
-		{ name = "neorg" },
-		{ name = "nvim_lsp", keyword_length = 1 },
-		{ name = "buffer",   keyword_length = 3 },
-		{ name = "luasnip",  keyword_length = 2 },
-	},
-	window = {
-		completion = cmp.config.window.bordered({ border = rounded }),
-		documentation = cmp.config.window.bordered({ border = rounded }),
-	},
-	formatting = {
-		fields = { "menu", "abbr", "kind" },
-		expandable_indicator = true,
-		format = function(entry, item)
-			local menu_icon = {
-				nvim_lsp = ">",
-				luasnip = "",
-				buffer = "",
-				path = "",
-			}
-
-			item.menu = menu_icon[entry.source.name]
-			return item
-		end,
-	},
-	mapping = {
-		["<cr>"] = cmp.mapping.confirm({ select = false }),
-		["<S-up>"] = cmp.mapping.scroll_docs(-4),
-		["<S-down>"] = cmp.mapping.scroll_docs(4),
-		["<tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item(select_opts)
-			elseif luasnip.jumpable(1) then
-				luasnip.jump(1)
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-		["<S-tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item(select_opts)
-			elseif luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-		["<C-esc>"] = cmp.mapping.abort(),
-	},
 })

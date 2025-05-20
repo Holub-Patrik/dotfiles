@@ -1,0 +1,5 @@
+~/.local/share/nvim/lazy/plenary.nvim
+lua/plenary/popup/init.lua
+194:+win_opts.border = "none"
+lua/plenary/window/border.lua
+234:+border=none,
