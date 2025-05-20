@@ -2,15 +2,15 @@ local M = {
 	{
 		"williamboman/mason.nvim",
 		config = function()
-			require('mason').setup({})
-		end
+			require("mason").setup({})
+		end,
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
 	},
 	{
 		"neovim/nvim-lspconfig",
-	}
+	},
 }
 
 return M

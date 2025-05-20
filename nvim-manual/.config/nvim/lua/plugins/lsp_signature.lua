@@ -18,5 +18,4 @@ local M = {
 		require("lsp_signature").setup(opts)
 	end,
 }
-
-return M
+return {}

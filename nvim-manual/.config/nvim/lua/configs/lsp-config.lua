@@ -2,16 +2,17 @@ local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd", "ruff", "b
 
 require("mason-lspconfig").setup({
 	ensure_installed = ensured_servers,
+	automatic_enable = true,
 })
 
-vim.lsp.config('clangd', {
+vim.lsp.config("clangd", {
 	cmd = {
 		"clangd",
 		"--background-index",
 		"--clang-tidy",
 		"--cross-file-rename",
 		"--header-insertion=iwyu",
-	}
+	},
 })
 
 vim.lsp.config("basedpyright", {
@@ -55,8 +56,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
 		bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type definition" })
 		bufmap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
-		bufmap("n", "<leader>lH", '<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>',
-			{ desc = "Signature help" })
+		bufmap(
+			"n",
+			"<leader>lH",
+			'<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>',
+			{ desc = "Signature help" }
+		)
 		-- bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
 		bufmap("n", "<F2>", "<cmd>lua require('renamer').rename()<cr>", { desc = "Rename" })
 		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code action" })

@@ -24,7 +24,8 @@ vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep search" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
 vim.keymap.set("n", "<leader>fG", vim.find_files_from_project_git_root, { desc = "Find files using git" })
 
-vim.keymap.set("n", "<leader>cc", "<cmd>update<cr><cmd>VimtexCompile<cr>", { desc = "Compile tex file" })
+-- with addition of which key, the default vimtex commands are simple to access
+-- vim.keymap.set("n", "<leader>cc", "<cmd>update<cr><cmd>VimtexCompile<cr>", { desc = "Compile tex file" })
 
 vim.keymap.set("n", "<leader>ft", oil.toggle_float, { desc = "Open file tree" })
 vim.keymap.set("n", ";", ":", {})
@@ -32,15 +33,15 @@ vim.keymap.set("n", "<leader><leader>x", "i<esc>", { desc = "Place an x mark"
 vim.keymap.set("n", "<leader><leader>c", "i󰄬<esc>", { desc = "Place a check mark" })
 vim.keymap.set("t", "<esc>", "<C-\\><C-n>")
 
-vim.keymap.set("n", "<leader>ot", function()
+-- if I ever add other things to open
+-- move this to ot
+vim.keymap.set("n", "<leader>t", function()
 	term.open_term()
 end, { desc = "Open floating terminal" })
 
-vim.api.nvim_create_autocmd(
-	"FileType", {
-		pattern = { "qf" },
-		callback = function()
-			vim.keymap.set("n", "<CR>", "<CR>:ccl<CR>", { noremap = true, buffer = true, silent = true })
-		end
-	}
-)
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "qf" },
+	callback = function()
+		vim.keymap.set("n", "<CR>", "<CR>:ccl<CR>", { noremap = true, buffer = true, silent = true })
+	end,
+})
