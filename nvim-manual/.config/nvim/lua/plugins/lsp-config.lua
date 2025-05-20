@@ -1,7 +1,7 @@
 local M = {
 	{
 		"williamboman/mason.nvim",
-		config = function ()
+		config = function()
 			require('mason').setup({})
 		end
 	},
