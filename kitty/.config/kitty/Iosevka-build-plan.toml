@@ -1,0 +1,66 @@
+[buildPlans.IosevkaCustom]
+family = "Iosevka Custom"
+spacing = "fontconfig-mono"
+serifs = "sans"
+noCvSs = false
+exportGlyphNames = true
+
+[buildPlans.IosevkaCustom.variants.design]
+one = "base"
+two = "curly-neck-serifed"
+three = "two-arcs"
+four = "closed-serifed"
+five = "upright-arched-serifed"
+seven = "curly-serifed-crossbar"
+eight = "two-circles"
+nine = "closed-contour"
+zero = "slashed"
+capital-a = "straight-serifless"
+capital-c = "serifless"
+tilde = "low"
+asterisk = "penta-low"
+underscore = "high"
+caret = "medium"
+paren = "flat-arc"
+brace = "straight"
+guillemet = "curly"
+number-sign = "upright"
+ampersand = "closed"
+at = "fourfold"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+bar = "natural-slope"
+question = "smooth"
+pilcrow = "high"
+micro-sign = "toothed-motion-serifed"
+decorative-angle-brackets = "middle"
+lig-ltgteq = "slanted"
+lig-equal-chain = "without-notch"
+lig-hyphen-chain = "without-notch"
+lig-plus-chain = "without-notch"
+lig-double-arrow-bar = "without-notch"
+lig-single-arrow-bar = "without-notch"
+
+  [buildPlans.IosevkaCustom.ligations]
+  inherits = "dlig"
+
+[buildPlans.IosevkaCustom.weights.Regular]
+shape = 400
+menu = 400
+css = 400
+
+[buildPlans.IosevkaCustom.weights.Bold]
+shape = 700
+menu = 700
+css = 700
+
+[buildPlans.IosevkaCustom.widths.Condensed]
+shape = 500
+menu = 3
+css = "condensed"
+
+[buildPlans.IosevkaCustom.widths.Normal]
+shape = 600
+menu = 5
+css = "normal"
