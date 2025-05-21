@@ -18,8 +18,8 @@ local M = {
 			["<Up>"] = {},
 			["<Down>"] = {},
 			["<esc>"] = { "cancel", "fallback" },
-			["<tab>"] = { "select_next", "snippet_forward" },
-			["<S-tab>"] = { "select_prev", "snippet_backward" },
+			["<tab>"] = { "select_next", "snippet_forward", 'fallback' },
+			["<S-tab>"] = { "select_prev", "snippet_backward", 'fallback' },
 		},
 
 		appearance = {
