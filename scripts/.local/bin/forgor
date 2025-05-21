@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ignore=()
 ignore+=("$HOME/Arch-Hyprland/")
 ignore+=("$HOME/Odin/")
