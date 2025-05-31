@@ -1,5 +1,6 @@
 local M = {
 	"saghen/blink.cmp",
+	-- event = "BufEnter", -- useless because of alpha
 	-- optional: provides snippets for the snippet source
 	dependencies = { "rafamadriz/friendly-snippets" },
 
@@ -18,8 +19,8 @@ local M = {
 			["<Up>"] = {},
 			["<Down>"] = {},
 			["<esc>"] = { "cancel", "fallback" },
-			["<tab>"] = { "select_next", "snippet_forward", 'fallback' },
-			["<S-tab>"] = { "select_prev", "snippet_backward", 'fallback' },
+			["<tab>"] = { "select_next", "snippet_forward", "fallback" },
+			["<S-tab>"] = { "select_prev", "snippet_backward", "fallback" },
 		},
 
 		appearance = {
