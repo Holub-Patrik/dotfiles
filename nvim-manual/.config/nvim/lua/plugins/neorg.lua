@@ -1,14 +1,12 @@
-local base_dir = "~/neorg-notes/"
-
 local M = {
 	"nvim-neorg/neorg",
 	lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
 	build = ":Neorg sync-parsers",
 	dependencies = {
-		"benlubas/neorg-interim-ls"
-
+		"benlubas/neorg-interim-ls",
 	},
 	config = function()
+		local base_dir = "~/notes/"
 		require("neorg").setup({
 			load = {
 				["core.defaults"] = {},
@@ -48,9 +46,9 @@ local M = {
 								-- Note that this will change with your workspace, so it fails silently if the file
 								-- doesn't exist
 								path = "people",
-							}
-						}
-					}
+							},
+						},
+					},
 				},
 			},
 		})
