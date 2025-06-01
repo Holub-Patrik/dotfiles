@@ -18,8 +18,8 @@ autoload -Uz compinit
 compinit
 
 # set prompt to pure => turn off starship
-autoload -U promptinit; promptinit
-prompt pure
+# autoload -U promptinit; promptinit
+# prompt pure
 
 source $HOME/.antigen.zsh
 
