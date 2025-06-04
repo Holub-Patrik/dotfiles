@@ -16,13 +16,13 @@ return {
 	---@module "conform"
 	---@type conform.setupOpts
 	opts = {
-		-- Define your formatters
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "ruff_format" },
 			c = { "clangd" },
 			cpp = { "clangd" },
 			odin = { lsp_format = "prefer" },
+			php = { "php_cs_fixer" }
 		},
 		default_format_opts = {
 			lsp_format = "fallback",
