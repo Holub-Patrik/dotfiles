@@ -17,10 +17,6 @@ zstyle :compinstall filename '/home/holubpat/.zshrc'
 autoload -Uz compinit
 compinit
 
-# set prompt to pure => turn off starship
-# autoload -U promptinit; promptinit
-# prompt pure
-
 source $HOME/.antigen.zsh
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
@@ -38,6 +34,9 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 # Tell Antigen that you're done.
 antigen apply
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 zstyle ':completion:*' menu select=-1
 bindkey '^[[Z' reverse-menu-complete
 
@@ -51,12 +50,6 @@ bindkey '^L' clear-screen-and-scrollback
 # add the odin binary
 export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
-
-# starship command prompt
-# if type "prompt" > /dev/null ; then
-# 	prompt off
-# fi
-# eval "$(starship init zsh)"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
@@ -81,10 +74,8 @@ alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 
 [ -f "/home/holubpat/.ghcup/env" ] && . "/home/holubpat/.ghcup/env" # ghcup-env
 
-export PHP_CS_FIXER_IGNORE_ENV=true
+export PHP_CS_FIXER_IGNORE_ENV=1
 
 # Created by `pipx` on 2025-04-24 15:30:38
 export PATH="$PATH:/home/holubpat/.local/bin"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
