@@ -16,17 +16,18 @@ return {
 	---@module "conform"
 	---@type conform.setupOpts
 	opts = {
-		-- Define your formatters
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "ruff_format" },
 			c = { "clangd" },
 			cpp = { "clangd" },
 			odin = { lsp_format = "prefer" },
+			-- php-cs-fixer is slow on "larger files"
+			php = { "php_cs_fixer", timeout_ms = 2500 }
 		},
 		default_format_opts = {
 			lsp_format = "fallback",
 		},
-		format_on_save = { timeout_ms = 200 },
+		format_on_save = {},
 	},
 }

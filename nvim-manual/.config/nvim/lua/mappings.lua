@@ -1,5 +1,4 @@
 local builtin = require("telescope.builtin")
--- local oil = require("oil")
 local term = require("configs.fterm")
 
 function vim.find_files_from_project_git_root()
@@ -27,7 +26,6 @@ vim.keymap.set("n", "<leader>fG", vim.find_files_from_project_git_root, { desc =
 -- with addition of which key, the default vimtex commands are simple to access
 -- vim.keymap.set("n", "<leader>cc", "<cmd>update<cr><cmd>VimtexCompile<cr>", { desc = "Compile tex file" })
 
--- vim.keymap.set("n", "<leader>ft", oil.toggle_float, { desc = "Open file tree" })
 vim.keymap.set("n", ";", ":", {})
 vim.keymap.set("n", "<leader><leader>x", "i<esc>", { desc = "Place an x mark" })
 vim.keymap.set("n", "<leader><leader>c", "i󰄬<esc>", { desc = "Place a check mark" })

@@ -26,6 +26,11 @@ vim.lsp.config("basedpyright", {
 	},
 })
 
+vim.lsp.config("phpactor", {
+	root_dir = nil,
+	root_markers = { 'composer.json', '.git', '.phpactor.json', '.phpactor.yml' }
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
 	callback = function(args)
