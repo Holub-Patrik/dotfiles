@@ -19,13 +19,7 @@ compinit
 
 source $HOME/.antigen.zsh
 
-# Bundles from the default repo (robbyrussell's oh-my-zsh).
-antigen bundle git
-# antigen bundle heroku
-# antigen bundle pip
-# antigen bundle lein
-# antigen bundle command-not-found
-antigen bundle ssh-agent
+antigen bundle bobsoppe/zsh-ssh-agent
 antigen theme romkatv/powerlevel10k
 
 # Syntax highlighting bundle.
