@@ -17,19 +17,18 @@ zstyle :compinstall filename '/home/holubpat/.zshrc'
 autoload -Uz compinit
 compinit
 
-source $HOME/.antigen.zsh
+# arch linux wiki says to do this
+if ! [[ -f $XDG_RUNTIME_DIR/ssh-agent.env ]]; then
+  touch $XDG_RUNTIME_DIR/ssh-agent.env
+fi
 
-antigen bundle bobsoppe/zsh-ssh-agent
-antigen theme romkatv/powerlevel10k
-
-# Syntax highlighting bundle.
-antigen bundle zsh-users/zsh-syntax-highlighting
-
-# Tell Antigen that you're done.
-antigen apply
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# start ssh agent
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [ ! -f "$SSH_AUTH_SOCK" ]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+fi
 
 zstyle ':completion:*' menu select=-1
 bindkey '^[[Z' reverse-menu-complete
@@ -73,3 +72,12 @@ export PHP_CS_FIXER_IGNORE_ENV=1
 # Created by `pipx` on 2025-04-24 15:30:38
 export PATH="$PATH:/home/holubpat/.local/bin"
 
+# Source prompt configuration
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# set the configured theme
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# This needs to stay at the end
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
