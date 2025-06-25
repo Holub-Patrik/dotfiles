@@ -47,9 +47,6 @@ export GIT_EDITOR="nvim"
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-# the fuck ?
-eval "$(thefuck --alias fuck)"
-
 alias ls="eza --icons=always"
 alias la="eza -a --icons=always"
 alias ll="eza -al --icons=always"
