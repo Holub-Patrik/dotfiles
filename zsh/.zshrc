@@ -8,14 +8,14 @@ fi
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-setopt extendedglob nomatch menu_complete
-unsetopt autocd beep notify auto_list list_ambiguous 
+setopt extendedglob nomatch 
+unsetopt beep notify auto_list list_ambiguous menu_complete
 bindkey -e
-fpath+=($HOME/.zsh/pure)
+# fpath+=($HOME/.zsh/pure)
 
 zstyle :compinstall filename '/home/holubpat/.zshrc'
-autoload -Uz compinit
-compinit
+# enable completion
+autoload -U compinit; compinit
 
 # arch linux wiki says to do this
 if ! [[ -f $XDG_RUNTIME_DIR/ssh-agent.env ]]; then
@@ -30,7 +30,12 @@ if [ ! -f "$SSH_AUTH_SOCK" ]; then
     source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
 fi
 
-zstyle ':completion:*' menu select=-1
+# now I know why selecet must equal -1
+# the select options says when to show the menu
+# The number of mathes can never be -1 so it never will open the menu
+# ---
+# added complete-options and complete
+zstyle ':completion:*' menu select=-1 complete-options true complete true
 bindkey '^[[Z' reverse-menu-complete
 
 function clear-screen-and-scrollback() {
@@ -54,7 +59,7 @@ alias ls="eza --icons=always"
 alias la="eza -a --icons=always"
 alias ll="eza -al --icons=always"
 alias lt="eza -a --tree --icons=always"
-alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
+# alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 
 
 # BEGIN opam configuration
