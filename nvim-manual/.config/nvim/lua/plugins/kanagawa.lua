@@ -36,7 +36,9 @@ local M = {
 			overrides = function()
 				return {
 					-- CursorLine = { bg = "None" },
-					Folded = { guibg = "None" },
+					-- Interesting
+					-- Here it didn't want guibg, it wanted bg
+					Folded = { bg = "None" },
 				}
 			end,
 		})
