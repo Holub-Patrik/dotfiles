@@ -7,7 +7,7 @@ fi
 
 HISTFILE=~/.histfile
 HISTSIZE=1000
-SAVEHIST=1000
+SAVEHIST=0
 setopt extendedglob nomatch 
 unsetopt beep notify auto_list list_ambiguous menu_complete
 bindkey -e
