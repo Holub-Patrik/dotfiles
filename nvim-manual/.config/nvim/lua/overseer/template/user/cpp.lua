@@ -1,58 +1,75 @@
 return {
-	name = "C++ Debug File",
+	name = "Compile C++",
 	params = {
+		compiler = {
+			name = "Compiler to use",
+			type = "string",
+			default = "clang++",
+		},
 		std = {
 			name = "C++ standard to be used",
 			type = "string",
-			default = "-std=c++23",
+			optional = true,
+		},
+		optimize = {
+			name = "Optimization level",
+			type = "integer",
+			validate = function(value)
+				if value < 0 or value > 3 then
+					return false
+				else
+					return true
+				end
+			end,
+			optional = true
+		},
+		debug = {
+			name = "Include debug symbols",
+			type = "boolean",
 			optional = true,
 		},
 		extra_flags = {
 			name = "Extra arguments",
-			desc = "Argument list given will be passed after std and before -g and file",
 			type = "list",
-			subtype = {
-				type = "string",
-			},
+			subtype = { type = "string" },
 			delimiter = ",",
 			optional = true,
 		},
 		impl_files = {
 			name = "Implementation Files",
-			desc = "Extra implementation files list to be used for simple project",
 			type = "list",
-			subtype = "string",
+			subtype = { type = "string" },
 			delimiter = ",",
-			optional = true,
+			default = vim.fn.expand("%")
 		},
 		ofile_name = {
 			name = "Output file name",
-			desc = "How should be the file named. If no name given -o param won't be passed",
 			type = "string",
 			default = "bin.out",
-			optional = true,
 		},
 	},
 	builder = function(params)
-		local file = vim.fn.expand("%:p")
 		local args = {}
 		if params.std then
-			table.insert(args, params.std)
+			table.insert(args, "-std=" .. params.std)
 		end
-		table.insert(args, "-g")
+		if params.optimize then
+			table.insert(args, "-O" .. params.optimize)
+		end
+		if params.debug then
+			table.insert(args, "-g")
+		end
 		if params.extra_flags then
 			table.insert(args, params.extra_flags)
 		end
-		table.insert(args, file)
 		if params.impl_files then
 			table.insert(args, params.impl_files)
 		end
 		if params.ofile_name then
-			table.insert(args, "-o")
-			table.insert(args, params.ofile_name)
+			table.insert(args, "-o" .. params.ofile_name)
 		end
 		return {
-			cmd = { "clang++" },
+			cmd = params.compiler,
 			args = args,
 			components = { { "on_output_quickfix", open = false }, "default" },
 		}
