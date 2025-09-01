@@ -6,32 +6,66 @@ clean () {
 	rm compile_commands.json
 }
 
+get_build_args() {
+	declare -A config=()
+	
+	# default to env var if set, otherwise clang++
+	read -p 'C++ compiler to use (CXX|clang++): ' cxx
+	config[CXX]=${cxx:-$CXX}
+	config[CXX]=${config[CXX]:-clang++}
+
+	# default to env var if set, otherwise clang++
+	read -p 'C compiler to use (CC|clang): ' cc
+	config[CC]=${cc:-$CC}
+	config[CC]=${config[CC]:-clang}
+
+	read -p 'Build type (Release): ' bd_type
+	config[BUILD_TYPE]=${bd_type:-Release}
+
+	declare -p config
+	
+}
+
 build() {
 	if [ ! -d "$bin_folder" ]; then
 		mkdir build
 	fi
 
 	if [ ! -d "$bin_folder/CMakeFiles/" ]; then
-		read -p 'C++ compiler to use (CXX|clang++): ' cxx
-		# default to env var if set, otherwise clang++
-		cxx=${cxx:-$CXX}
-		cxx=${cxx:-clang++}
-		read -p 'C compiler to use (CC|clang): ' cc
-		#default to env var if set, otherwise clang++
-		cc=${cc:-$CC}
-		cc=${cc:-clang}
-		read -p 'Build type (Release): ' bd_type
-		bd_type=${bd_type:-Release}
+		local config_opts
+		config_opts=$(get_build_args)
+		eval "$config_opts"
 
 		cd "$bin_folder"
-		cmake -DCMAKE_BUILD_TYPE=$bd_type\
-			-DCMAKE_CXX_COMPILER=$cxx\
-			-DCMAKE_C_COMPILER=$cc\
+		cmake -DCMAKE_BUILD_TYPE=${config[BUILD_TYPE]}\
+			-DCMAKE_CXX_COMPILER=${config[CXX]}\
+			-DCMAKE_C_COMPILER=${config[CC]}\
 			-DCMAKE_EXPORT_COMPILE_COMMANDS=ON\
 			..
 		cd ..
 		ln -sf "$bin_folder"/compile_commands.json compile_commands.json
 	fi
+
+	make -C $bin_folder
+}
+
+rebuild() {
+	if [ ! -d "$bin_folder" ]; then
+		mkdir build
+	fi
+
+	local config_opts
+	config_opts=$(get_build_args)
+	eval "$config_opts"
+
+	cd "$bin_folder"
+	cmake -DCMAKE_BUILD_TYPE=${config[BUILD_TYPE]}\
+		-DCMAKE_CXX_COMPILER=${config[CXX]}\
+		-DCMAKE_C_COMPILER=${config[CC]}\
+		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON\
+		..
+	cd ..
+	ln -sf "$bin_folder"/compile_commands.json compile_commands.json
 
 	make -C $bin_folder
 }
@@ -43,6 +77,10 @@ run() {
 for char in $(echo $1 | sed -e 's/\(.\)/\1\n/g'); do
 	if [ "$char" = "c" ]; then
 		clean
+	fi
+
+	if [ "$char" = "n" ]; then
+		rebuild
 	fi
 
 	if [ "$char" = "b" ]; then
