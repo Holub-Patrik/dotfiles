@@ -1,6 +1,6 @@
 while :
 do
-	path="$(eza -a | fzf)"
+	path="$(eza $@ | fzf)"
 	if [ -z "$path" ]; then
 		break 
 	fi
