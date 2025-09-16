@@ -1,6 +1,8 @@
 while :
 do
-	path="$(eza $@ | fzf)"
+	dirs=("eza $@")
+	dirs+=("..")
+	path="$(fzf --preview "$(declare -p array); printf '%s\n' \"\${array[{n}]}\"")"
 	if [ -z "$path" ]; then
 		break 
 	fi
