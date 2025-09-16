@@ -1,0 +1,8 @@
+while :
+do
+	path="$(eza -a | fzf)"
+	if [ -z "$path" ]; then
+		break 
+	fi
+	cd "$path"
+done
