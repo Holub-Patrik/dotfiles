@@ -74,6 +74,23 @@ export PHP_CS_FIXER_IGNORE_ENV=1
 # Created by `pipx` on 2025-04-24 15:30:38
 export PATH="$PATH:/home/holubpat/.local/bin"
 
+# bat coloring for manpages
+export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
+
+ncd() {
+  while :; do
+    local cd_path=$( (echo ".."; find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n') | \
+           fzf --height=40% --border --prompt="> " \
+               --preview='eza --long --git --icons --color=always {}' )
+
+    if [ -z "$cd_path" ]; then
+      return 0
+    fi
+
+    builtin cd -- "$cd_path" || return 1
+  done
+}
+
 # Source prompt configuration
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -83,5 +100,3 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # This needs to stay at the end
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
