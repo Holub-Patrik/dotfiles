@@ -22,6 +22,47 @@ get_build_args() {
 	read -p 'Build type (Release): ' bd_type
 	config[BUILD_TYPE]=${bd_type:-Release}
 
+	if [ ${config[BUILD_TYPE]} = "Debug" ]; then
+		config[asan]="OFF"
+		config[tsan]="OFF"
+		config[msan]="OFF"
+		config[ubsan]="OFF"
+
+		if [ ${config[msan]} = "OFF" ] && [ ${config[tsan]} = "OFF" ]; then
+			read -p 'Do you want to sanitize addresses? [y/N]: ' asan
+			asan=${asan:-N}
+
+			if [ $asan = "y" ]; then
+				config[asan]="ON"
+			fi
+		fi
+
+		if [ ${config[asan]} = "OFF" ] && [ ${config[tsan]} = "OFF" ]; then
+			read -p 'Do you want to sanitize memory? [y/N]: ' msan
+			msan=${msan:-N}
+
+			if [ $msan = "y" ]; then
+				config[msan]="ON"
+			fi
+		fi
+
+		if [ ${config[asan]} = "OFF" ] && [ ${config[msan]} = "OFF" ]; then
+			read -p 'Do you want to sanitize threads? [y/N]: ' tsan
+			tsan=${tsan:-N}
+
+			if [ $tsan = "y" ]; then
+				config[tsan]="ON"
+			fi
+		fi
+
+		read -p 'Do you want to sanitize undefined behaviour? [y/N]: ' ubsan
+		ubsan=${ubsan:-N}
+
+		if [ $ubsan = "y" ]; then
+			config[ubsan]="ON"
+		fi
+	fi
+
 	declare -p config
 	
 }
@@ -41,6 +82,10 @@ build() {
 			-DCMAKE_CXX_COMPILER=${config[CXX]}\
 			-DCMAKE_C_COMPILER=${config[CC]}\
 			-DCMAKE_EXPORT_COMPILE_COMMANDS=ON\
+			-DASAN=${config[asan]}\
+			-DTSAN=${config[tsan]}\
+			-DMSAN=${config[msan]}\
+			-DUBSAN=${config[ubsan]}\
 			..
 		cd ..
 		ln -sf "$bin_folder"/compile_commands.json compile_commands.json
