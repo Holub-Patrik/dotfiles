@@ -126,9 +126,23 @@ export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08
 
 ncd() {
   while :; do
-    local cd_path=$( (echo ".."; find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n') | \
-           fzf --height=40% --border --prompt="> " \
-               --preview='eza --long --git --icons --color=always {}' )
+    local cd_path=$( (echo ".."; fd -t d -d 1) | \
+           fzf --reverse --height=40% --border --prompt="> " \
+               --preview='eza -l --git --icons --color=always {}' )
+
+    if [ -z "$cd_path" ]; then
+      return 0
+    fi
+
+    builtin cd -- "$cd_path" || return 1
+  done
+}
+
+ncdh() {
+  while :; do
+    local cd_path=$( (echo ".."; fd -H -t d -d 1) | \
+           fzf --reverse --height=40% --border --prompt="> " \
+               --preview='eza -a -l --git --icons --color=always {}' )
 
     if [ -z "$cd_path" ]; then
       return 0
