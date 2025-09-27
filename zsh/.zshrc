@@ -124,33 +124,57 @@ export PATH="$PATH:/home/holubpat/.local/bin"
 # bat coloring for manpages
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
 
-ncd() {
+ncd-normal() {
+  setopt localoptions pipefail no_aliases 2> /dev/null
   while :; do
     local cd_path=$( (echo ".."; fd -t d -d 1) | \
            fzf --reverse --height=40% --border --prompt="> " \
                --preview='eza -l --git --icons --color=always {}' )
 
     if [ -z "$cd_path" ]; then
+      zle push-line
+      zle accept-line
+      unset cd_path
+      zle reset-prompt
+
       return 0
     fi
 
-    builtin cd -- "$cd_path" || return 1
+    builtin cd -- ${(q)cd_path:a} || return 1
   done
 }
 
-ncdh() {
+zle -N ncd-normal
+bindkey '^n' ncd-normal
+bindkey -M emacs '^n' ncd-normal
+bindkey -M vicmd '^n' ncd-normal
+bindkey -M viins '^n' ncd-normal
+
+ncd-hidden() {
+  setopt localoptions pipefail no_aliases 2> /dev/null
   while :; do
     local cd_path=$( (echo ".."; fd -H -t d -d 1) | \
            fzf --reverse --height=40% --border --prompt="> " \
                --preview='eza -a -l --git --icons --color=always {}' )
 
     if [ -z "$cd_path" ]; then
+      zle push-line
+      zle accept-line
+      unset cd_path
+      zle reset-prompt
+
       return 0
     fi
 
-    builtin cd -- "$cd_path" || return 1
+    builtin cd -- ${(q)cd_path:a} || return 1
   done
 }
+
+zle -N ncd-hidden
+bindkey '^h' cd-hidden
+bindkey -M emacs '^h' cd-hidden
+bindkey -M vicmd '^h' cd-hidden
+bindkey -M viins '^h' cd-hidden
 
 # Source prompt configuration
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
