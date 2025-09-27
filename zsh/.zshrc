@@ -50,7 +50,54 @@ export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
 
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+# source <(fzf --zsh)
+# Setup my own (fd is more flexible and faster than the builtin)
+# Also this way I don't load extra keybinds
+
+cd-widget-normal() {
+  setopt localoptions pipefail no_aliases 2> /dev/null
+  local dir="$(fd -t d | fzf --reverse --height=70%)"
+  if [[ -z "$dir" ]]; then
+    zle redisplay
+    return 0
+  fi
+  zle push-line
+  BUFFER="builtin cd -- ${(q)dir:a}"
+  zle accept-line
+  local ret=$?
+  unset dir
+  zle reset-prompt
+  return $ret
+}
+
+zle -N cd-widget-normal
+bindkey '\ec' cd-widget-normal
+bindkey -M emacs '\ec' cd-widget-normal
+bindkey -M vicmd '\ec' cd-widget-normal
+bindkey -M viins '\ec' cd-widget-normal
+
+cd-widget-hidden() {
+  setopt localoptions pipefail no_aliases 2> /dev/null
+  local dir="$(fd -H -t d | fzf --reverse --height=70%)"
+  if [[ -z "$dir" ]]; then
+    zle redisplay
+    return 0
+  fi
+  zle push-line
+  BUFFER="builtin cd -- ${(q)dir:a}"
+  zle accept-line
+  local ret=$?
+  unset dir
+  zle reset-prompt
+  return $ret
+}
+
+zle -N cd-widget-hidden
+bindkey '\eh' cd-widget-hidden
+bindkey -M emacs '\eh' cd-widget-hidden
+bindkey -M vicmd '\eh' cd-widget-hidden
+bindkey -M viins '\eh' cd-widget-hidden
+
 
 alias ls="eza --icons=always"
 alias la="eza -a --icons=always"
