@@ -50,54 +50,22 @@ export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
 
 # Set up fzf key bindings and fuzzy completion
-# source <(fzf --zsh)
-# Setup my own (fd is more flexible and faster than the builtin)
-# Also this way I don't load extra keybinds
+# Disable commands I do not use (CTRL-R for some reason cannot be disabled)
+export FZF_CTRL_T_COMMAND="fd -H -tf -E .git -E node_modules -c=always"
+export FZF_CTRL_T_OPTS='--ansi --preview="bat -n --color=always {}"'
+# modify so that fd is used for the list and disable --follow
+# symlings absolutely explode the list and make it take ages to find my own
+# file I want to actually use
 
-cd-widget-normal() {
-  setopt localoptions pipefail no_aliases 2> /dev/null
-  local dir="$(fd -t d | fzf --reverse --height=70%)"
-  if [[ -z "$dir" ]]; then
-    zle redisplay
-    return 0
-  fi
-  zle push-line
-  BUFFER="builtin cd -- ${(q)dir:a}"
-  zle accept-line
-  local ret=$?
-  unset dir
-  zle reset-prompt
-  return $ret
-}
+# Namely clangd inside mason has a fucking zos_wrapper which gets a higher score than
+# kiv-zos
 
-zle -N cd-widget-normal
-bindkey '\ec' cd-widget-normal
-bindkey -M emacs '\ec' cd-widget-normal
-bindkey -M vicmd '\ec' cd-widget-normal
-bindkey -M viins '\ec' cd-widget-normal
+# Now this would have to be fixed with quite massive ignore file for fd
+# This is possible to do, but I don't know how to actually make it sane
 
-cd-widget-hidden() {
-  setopt localoptions pipefail no_aliases 2> /dev/null
-  local dir="$(fd -H -t d | fzf --reverse --height=70%)"
-  if [[ -z "$dir" ]]; then
-    zle redisplay
-    return 0
-  fi
-  zle push-line
-  BUFFER="builtin cd -- ${(q)dir:a}"
-  zle accept-line
-  local ret=$?
-  unset dir
-  zle reset-prompt
-  return $ret
-}
-
-zle -N cd-widget-hidden
-bindkey '\eh' cd-widget-hidden
-bindkey -M emacs '\eh' cd-widget-hidden
-bindkey -M vicmd '\eh' cd-widget-hidden
-bindkey -M viins '\eh' cd-widget-hidden
-
+# For now I will just not let it find withing hidden files
+export FZF_ALT_C_COMMAND="fd -td -E .git -E node_modules"
+source <(fzf --zsh)
 
 alias ls="eza --icons=always"
 alias la="eza -a --icons=always"

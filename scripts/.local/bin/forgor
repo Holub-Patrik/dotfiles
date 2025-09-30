@@ -1,23 +1,8 @@
 #!/bin/bash
-ignore=()
-ignore+=("$HOME/Arch-Hyprland/")
-ignore+=("$HOME/Odin/")
 
-locs=$(find ~/ -type d -name ".git" 2>/dev/null | 
-	grep -v ".*/\..*\.git" | 
-	grep -v "find.*" | 
-	sed -e 's/.git//')
-
-filtered_locs=()
-for should_ignore in "${ignore[@]}" 
-do
-	for loc in "${locs[@]}"
-	do
-		filtered_locs+=($(grep "$should_ignore" -v <<< "$loc"))
-	done
-	locs=("${filtered_locs[@]}")
-	filtered_locs=()
-done
+readarray -t locs < <( fd -H -td --glob "\.git" ~/ 2>/dev/null |\
+	grep -Z -v -E "$(paste -s -d '|' ~/.forgor-ignore)" |\
+	sed "s/\.git\///" )
 
 for loc in "${locs[@]}"
 do
