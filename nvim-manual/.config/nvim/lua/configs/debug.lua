@@ -1,4 +1,4 @@
-require("dap-python").setup("uv")
+-- require("dap-python").setup("uv")
 local dap = require("dap")
 local dapui = require("dapui")
 dapui.setup()
