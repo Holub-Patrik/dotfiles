@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Check if a file path was provided
+if [ -z "$1" ]; then
+  echo "Error: No file specified."
+  echo "Usage: $0 \"/path/to/your file\""
+  exit 1
+fi
+
+# Check if the specified file actually exists
+if [ ! -f "$1" ]; then
+  echo "Error: File not found at '$1'"
+  exit 1
+fi
+
+original_filepath="$1"
+directory=$(dirname "$original_filepath")
+filename=$(basename "$original_filepath")
+
+new_filename="${filename// /_}"
+
+if [ "$filename" = "$new_filename" ]; then
+  echo "Filename '$filename' already has no spaces. No changes made."
+  exit 0
+fi
+
+new_filepath="$directory/$new_filename"
+mv -v "$original_filepath" "$new_filepath"
+
+echo "Done."

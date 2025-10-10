@@ -50,6 +50,21 @@ export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
 
 # Set up fzf key bindings and fuzzy completion
+# Disable commands I do not use (CTRL-R for some reason cannot be disabled)
+export FZF_CTRL_T_COMMAND="fd -H -tf -E .git -E node_modules -c=always"
+export FZF_CTRL_T_OPTS='--ansi --preview="bat -n --color=always {}"'
+# modify so that fd is used for the list and disable --follow
+# symlings absolutely explode the list and make it take ages to find my own
+# file I want to actually use
+
+# Namely clangd inside mason has a fucking zos_wrapper which gets a higher score than
+# kiv-zos
+
+# Now this would have to be fixed with quite massive ignore file for fd
+# This is possible to do, but I don't know how to actually make it sane
+
+# For now I will just not let it find withing hidden files
+export FZF_ALT_C_COMMAND="fd -td -E .git -E node_modules"
 source <(fzf --zsh)
 
 alias ls="eza --icons=always"
@@ -73,6 +88,61 @@ export PHP_CS_FIXER_IGNORE_ENV=1
 
 # Created by `pipx` on 2025-04-24 15:30:38
 export PATH="$PATH:/home/holubpat/.local/bin"
+
+# bat coloring for manpages
+export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
+
+ncd-normal() {
+  setopt localoptions pipefail no_aliases 2> /dev/null
+  while :; do
+    local cd_path=$( (echo ".."; fd -t d -d 1) | \
+           fzf --reverse --height=40% --border --prompt="> " \
+               --preview='eza -l --git --icons --color=always {}' )
+
+    if [ -z "$cd_path" ]; then
+      zle push-line
+      zle accept-line
+      unset cd_path
+      zle reset-prompt
+
+      return 0
+    fi
+
+    builtin cd -- ${(q)cd_path:a} || return 1
+  done
+}
+
+zle -N ncd-normal
+bindkey '^n' ncd-normal
+bindkey -M emacs '^n' ncd-normal
+bindkey -M vicmd '^n' ncd-normal
+bindkey -M viins '^n' ncd-normal
+
+ncd-hidden() {
+  setopt localoptions pipefail no_aliases 2> /dev/null
+  while :; do
+    local cd_path=$( (echo ".."; fd -H -t d -d 1) | \
+           fzf --reverse --height=40% --border --prompt="> " \
+               --preview='eza -a -l --git --icons --color=always {}' )
+
+    if [ -z "$cd_path" ]; then
+      zle push-line
+      zle accept-line
+      unset cd_path
+      zle reset-prompt
+
+      return 0
+    fi
+
+    builtin cd -- ${(q)cd_path:a} || return 1
+  done
+}
+
+zle -N ncd-hidden
+bindkey '^h' cd-hidden
+bindkey -M emacs '^h' cd-hidden
+bindkey -M vicmd '^h' cd-hidden
+bindkey -M viins '^h' cd-hidden
 
 # Source prompt configuration
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

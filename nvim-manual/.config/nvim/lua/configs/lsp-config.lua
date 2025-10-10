@@ -1,4 +1,11 @@
-local ensured_servers = { "lua_ls", "ols", "rust_analyzer", "clangd", "ruff", "basedpyright" }
+local ensured_servers = {
+	"lua_ls",
+	"ols",
+	"rust_analyzer",
+	"clangd",
+	"ruff",
+	"basedpyright",
+}
 
 require("mason-lspconfig").setup({
 	ensure_installed = ensured_servers,
@@ -19,16 +26,16 @@ vim.lsp.config("basedpyright", {
 	settings = {
 		basedpyright = {
 			disableOrganizeImports = true,
-		},
-		python = {
-			ignore = { "*" },
+			analysis = {
+				typeCheckingMode = "standard",
+			},
 		},
 	},
 })
 
 vim.lsp.config("phpactor", {
 	root_dir = nil,
-	root_markers = { 'composer.json', '.git', '.phpactor.json', '.phpactor.yml' }
+	root_markers = { "composer.json", ".git", ".phpactor.json", ".phpactor.yml" },
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -45,6 +52,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 	desc = "LSP: Disable hover capability from Ruff",
 })
+
+local function lsp_rename()
+	vim.ui.input({ prompt = "Enter new name"
+	}, function(new_name)
+		if new_name == "" then
+			return
+		end
+		vim.lsp.buf.rename(new_name)
+	end)
+end
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp Actions",
@@ -67,8 +84,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			'<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>',
 			{ desc = "Signature help" }
 		)
-		-- bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
-		bufmap("n", "<F2>", "<cmd>lua require('renamer').rename()<cr>", { desc = "Rename" })
+		bufmap("n", "<F2>", lsp_rename, { desc = "Rename" })
 		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code action" })
 		bufmap("n", "<leader>eh", "<cmd>lua vim.diagnostic.open_float()<cr>", { desc = "Open float" })
 		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Goto next error" })

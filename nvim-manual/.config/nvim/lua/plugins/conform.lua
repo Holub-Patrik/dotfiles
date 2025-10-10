@@ -23,7 +23,8 @@ return {
 			cpp = { "clangd" },
 			odin = { lsp_format = "prefer" },
 			-- php-cs-fixer is slow on "larger files"
-			php = { "php_cs_fixer", timeout_ms = 2500 }
+			php = { "php_cs_fixer", timeout_ms = 2500 },
+			typst = { "prettypst" },
 		},
 		default_format_opts = {
 			lsp_format = "fallback",
