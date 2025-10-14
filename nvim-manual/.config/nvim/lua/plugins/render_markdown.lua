@@ -4,7 +4,8 @@ local M = {
 	---@type render.md.UserConfig
 	opts = {
 		completions = { lsp = { enabled = true } },
-		render_modes = true,
+		-- render_modes = true,
+		anti_conceal = { enabled = false },
 	},
 }
 
