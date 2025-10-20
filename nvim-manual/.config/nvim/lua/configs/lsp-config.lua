@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			'<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>',
 			{ desc = "Signature help" }
 		)
-		bufmap("n", "<F2>", lsp_rename, { desc = "Rename" })
+		-- bufmap("n", "<F2>", lsp_rename, { desc = "Rename" })
 		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code action" })
 		bufmap("n", "<leader>eh", "<cmd>lua vim.diagnostic.open_float()<cr>", { desc = "Open float" })
 		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Goto next error" })

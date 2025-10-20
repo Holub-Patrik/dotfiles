@@ -14,6 +14,10 @@ vim.keymap.set("n", "<leader>t", function()
 	term.open_term()
 end, { desc = "Open floating terminal" })
 
+vim.keymap.set("n", "<F2>", function()
+	return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true })
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "qf" },
 	callback = function()
