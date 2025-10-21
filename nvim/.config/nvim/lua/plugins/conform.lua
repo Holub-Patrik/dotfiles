@@ -1,43 +1,34 @@
 return {
-  "stevearc/conform.nvim",
-  event = { "BufWritePre" },
-  cmd = { "ConformInfo" },
-  keys = {
-    {
-      -- Customize or remove this keymap to your liking
-      "<leader>lf",
-      function() require("conform").format { async = true } end,
-      mode = "",
-      desc = "Format buffer",
-    },
-  },
-  -- This will provide type hinting with LuaLS
-  ---@module "conform"
-  ---@type conform.setupOpts
-  opts = {
-    -- Define your formatters
-    formatters_by_ft = {
-      lua = { "stylua" },
-      python = { "ruff" },
-      odin = { lsp_format = "prefer" },
-      php = { "php" },
-    },
-    -- Set default options
-    default_format_opts = {
-      lsp_format = "fallback",
-    },
-    -- Set up format-on-save
-    format_on_save = { timeout_ms = 500 },
-    -- Customize formatters
-    formatters = {
-      php = {
-        command = "php-cs-fixer",
-        args = {
-          "fix",
-          "$FILENAME",
-        },
-        stdin = false,
-      },
-    },
-  },
+	"stevearc/conform.nvim",
+	event = { "BufWritePre" },
+	cmd = { "ConformInfo" },
+	keys = {
+		{
+			"<leader>lf",
+			function()
+				require("conform").format({ async = true })
+			end,
+			mode = "",
+			desc = "Format buffer",
+		},
+	},
+	-- This will provide type hinting with LuaLS
+	---@module "conform"
+	---@type conform.setupOpts
+	opts = {
+		formatters_by_ft = {
+			lua = { "stylua" },
+			python = { "ruff_format" },
+			c = { "clangd" },
+			cpp = { "clangd" },
+			odin = { lsp_format = "prefer" },
+			-- php-cs-fixer is slow on "larger files"
+			php = { "php_cs_fixer", timeout_ms = 2500 },
+			typst = { "prettypst" },
+		},
+		default_format_opts = {
+			lsp_format = "fallback",
+		},
+		format_on_save = {},
+	},
 }

@@ -1,15 +1,15 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+local M = {
+	"nvim-treesitter/nvim-treesitter",
+	build = ":TSUpdate",
+	config = function ()
+		local config = require("nvim-treesitter.configs")
 
--- Customize Treesitter
-
----@type LazySpec
-return {
-  "nvim-treesitter/nvim-treesitter",
-  opts = {
-    ensure_installed = {
-      "lua",
-      "vim",
-      -- add more arguments for adding more treesitter parsers
-    },
-  },
+		config.setup({
+			ensure_installed = { "lua", "odin", "rust", "c" },
+			highlight = { enable = true },
+			indent = { enable = true },
+		})
+	end
 }
+
+return M
