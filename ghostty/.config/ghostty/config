@@ -1,5 +1,5 @@
 font-size = 12
-config-file = font-monaspace
+config-file = font-iosevka
 
 theme = Symfonic 
 
@@ -8,14 +8,17 @@ cursor-opacity = 1
 cursor-style = underline
 cursor-color = #ffffff
 
+foreground = #ffffff
 background-opacity = 0.6
 background-blur = false
 unfocused-split-opacity = 1
 working-directory = inherit
 
 keybind = ctrl+shift+tab=next_tab
-keybind = ctrl+|=new_split:right
-keybind = ctrl+\=new_split:down
+keybind = ctrl+right=new_split:right
+keybind = ctrl+down=new_split:down
+keybind = ctrl+up=new_split:up
+keybind = ctrl+left=new_split:left
 keybind = super+alt+i=inspector:toggle
 keybind = alt+right=goto_split:right
 keybind = alt+left=goto_split:left
@@ -39,7 +42,6 @@ confirm-close-surface = false
 
 shell-integration = detect
 shell-integration-features = no-cursor,sudo,title
-
 
 term = xterm-ghostty
 auto-update = off
