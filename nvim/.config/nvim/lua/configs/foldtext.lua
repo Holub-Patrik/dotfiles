@@ -1,131 +1,179 @@
----@module Foldtext
----Based on https://www.reddit.com/r/neovim/comments/16sqyjz/finally_we_can_have_highlighted_folds/
----Updated with vim.treesitter._fold.foldtext()
+local ns = vim.api.nvim_create_namespace("foldtext")
 
-local function parse_line(linenr)
-	local bufnr = vim.api.nvim_get_current_buf()
-
-	local line = vim.api.nvim_buf_get_lines(bufnr, linenr - 1, linenr, false)[1]
-	if not line then
-		return nil
-	end
-
-	local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
-	if not ok then
-		return nil
-	end
-
-	local query = vim.treesitter.query.get(parser:lang(), "highlights")
-	if not query then
-		return nil
-	end
-
-	local tree = parser:parse({ linenr - 1, linenr })[1]
-
-	local result = {}
-
-	local line_pos = 0
-
-	for id, node, metadata in query:iter_captures(tree:root(), 0, linenr - 1, linenr) do
-		local name = query.captures[id]
-		local start_row, start_col, end_row, end_col = node:range()
-
-		local priority = tonumber(metadata.priority or vim.highlight.priorities.treesitter)
-
-		if start_row == linenr - 1 and end_row == linenr - 1 then
-			-- check for characters ignored by treesitter
-			if start_col > line_pos then
-				table.insert(result, {
-					line:sub(line_pos + 1, start_col),
-					{ { "Folded", priority } },
-					range = { line_pos, start_col },
-				})
-			end
-			line_pos = end_col
-
-			local text = line:sub(start_col + 1, end_col)
-			table.insert(result, { text, { { "@" .. name, priority } }, range = { start_col, end_col } })
-		end
-	end
-
-	local i = 1
-	while i <= #result do
-		-- find first capture that is not in current range and apply highlights on the way
-		local j = i + 1
-		while j <= #result and result[j].range[1] >= result[i].range[1] and result[j].range[2] <= result[i].range[2] do
-			for k, v in ipairs(result[i][2]) do
-				if not vim.tbl_contains(result[j][2], v) then
-					table.insert(result[j][2], k, v)
-				end
-			end
-			j = j + 1
-		end
-
-		-- remove the parent capture if it is split into children
-		if j > i + 1 then
-			table.remove(result, i)
-		else
-			-- highlights need to be sorted by priority, on equal prio, the deeper nested capture (earlier
-			-- in list) should be considered higher prio
-			if #result[i][2] > 1 then
-				table.sort(result[i][2], function(a, b)
-					return a[2] < b[2]
-				end)
-			end
-
-			result[i][2] = vim.tbl_map(function(tbl)
-				return tbl[1]
-			end, result[i][2])
-			result[i] = { result[i][1], result[i][2] }
-
-			i = i + 1
-		end
-	end
-
-	return result
-end
-
-function HighlightedFoldtext()
-	local result = parse_line(vim.v.foldstart)
-	if not result then
-		return vim.fn.foldtext()
-	end
-
-	local folded = {
-		{ " " .. vim.v.foldend - vim.v.foldstart .. " lines ", "FoldedText" },
-	}
-
-	for _, item in ipairs(folded) do
-		table.insert(result, item)
-	end
-
-	local result2 = parse_line(vim.v.foldend)
-	if result2 then
-		local first = result2[1]
-		result2[1] = { vim.trim(first[1]), first[2] }
-		for _, item in ipairs(result2) do
-			table.insert(result, item)
-		end
-	end
-
-	return result
-end
-
-local function set_fold_hl()
-	-- local nf = vim.api.nvim_get_hl(0, { name = "NormalFloat", link = false })
-	local comment = vim.api.nvim_get_hl(0, { name = "Comment", link = false })
-	local hl = vim.api.nvim_get_hl(0, { name = "Folded" })
-	hl.bg = 00000000
-	vim.api.nvim_set_hl(0, "FoldedText", { bg = 00000000, fg = comment.fg, italic = true })
-	vim.api.nvim_set_hl(0, "Folded", hl)
-end
-
-set_fold_hl()
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-	callback = set_fold_hl,
-})
+local config = {
+	foldtext = {
+		enabled = true,
+		padding = 3,
+		lineCount = {
+			template = "%d lines", -- `%d` is replaced with the number of folded lines
+			hlgroup = "Comment",
+		},
+		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+		gitsignsCount = true, -- requires `gitsigns.nvim`
+		disableOnFt = { "snacks_picker_input" },
+	},
+}
 
 vim.opt.fillchars:append({ fold = " " })
+do
+	-- initialize in current window when lazy-loading `nvim-origami`
+	for _, winid in pairs(vim.api.nvim_list_wins()) do
+		vim.wo[winid].foldtext = "" -- keep syntax highlighting
+	end
+	-- override foldtext in new windows that set foldtext
+	vim.api.nvim_create_autocmd("WinNew", {
+		desc = "Origami: Set foldtext in all windows",
+		callback = function(ctx)
+			local winid = vim.fn.bufwinid(ctx.buf)
+			vim.wo[winid].foldtext = ""
+		end,
+	})
+end
 
-return 'luaeval("HighlightedFoldtext")()'
+--------------------------------------------------------------------------------
+
+local function getDiagnosticsInFold(buf, foldstart, foldend)
+	-- get config from `vim.diagnostic.config`
+	local signConfig = vim.diagnostic.config().signs
+	if type(signConfig) == "function" then
+		signConfig = signConfig(_, buf)
+	end -- see #24
+	local diagIcons = { "E", "W", "I", "H" }
+	local diagHls = { "DiagnosticError", "DiagnosticWarn", "DiagnosticInfo", "DiagnosticHint" }
+	if type(signConfig) == "table" then
+		diagIcons = signConfig.text or diagIcons
+		diagHls = signConfig.linehl or diagHls
+	end
+
+	-- get count by severity in the folded lines
+	local diagsInFold = {
+		[vim.diagnostic.severity.ERROR] = 0,
+		[vim.diagnostic.severity.WARN] = 0,
+		[vim.diagnostic.severity.INFO] = 0,
+		[vim.diagnostic.severity.HINT] = 0,
+	}
+	for _, diag in pairs(vim.diagnostic.get(buf)) do
+		local lnum = diag.lnum + 1
+		if lnum > foldstart and lnum <= foldend then -- exclude 1st folded line since still visible
+			diagsInFold[diag.severity] = diagsInFold[diag.severity] + 1
+		end
+	end
+
+	-- convert count info into virtual text table for `set_extmark`
+	local chunks = {}
+	for severity = vim.diagnostic.severity.ERROR, vim.diagnostic.severity.HINT do
+		if diagsInFold[severity] > 0 then
+			table.insert(chunks, { " " }) -- separate, so the padding does not get hlgroup
+			local text = diagIcons[severity] .. diagsInFold[severity]
+			table.insert(chunks, { text, { diagHls[severity] } })
+		end
+	end
+	return chunks
+end
+
+local function getGitHunksInFold(buf, foldstart, foldend)
+	local gitsignsInstalled, gitsigns = pcall(require, "gitsigns")
+	if not gitsignsInstalled then
+		return {}
+	end
+
+	local typeIcons = { change = "~", delete = "-", add = "+" }
+	local typeHls = { change = "GitSignsChange", delete = "GitSignsDelete", add = "GitSignsAdd" }
+
+	-- get count by type in the folded lines: for deletions check if deletion is
+	-- in the fold, for additions/changes, calculate the overlap of hunk and fold
+	local hunksInFold = { change = 0, delete = 0, add = 0 }
+	for _, h in pairs(gitsigns.get_hunks(buf) or {}) do
+		if h.type == "delete" then
+			local deletionLine = h.added.start -- SIC even for deletions, correctly shifted line is in `.added`
+			local isInFold = deletionLine >= foldstart and deletionLine <= foldend
+			if isInFold then
+				hunksInFold["delete"] = hunksInFold["delete"] + h.removed.count
+			end
+		else
+			local hunkStart = h.added.start
+			local hunkEnd = hunkStart - 1 + h.added.count
+			local overlapStart = math.max(foldstart + 1, hunkStart) -- + 1 since 1st folded line still visible
+			local overlapEnd = math.min(foldend, hunkEnd)
+			local overlap = overlapEnd - overlapStart + 1
+			if overlap > 0 then
+				hunksInFold[h.type] = hunksInFold[h.type] + overlap
+			end
+		end
+	end
+
+	-- convert count info into virtual text table for `set_extmark`
+	local chunks = {}
+	for _, type in pairs({ "add", "change", "delete" }) do
+		if hunksInFold[type] > 0 then
+			table.insert(chunks, { " " }) -- separate, so the padding does not get hlgroup
+			local text = typeIcons[type] .. hunksInFold[type]
+			table.insert(chunks, { text, { typeHls[type] } })
+		end
+	end
+
+	return chunks
+end
+
+--------------------------------------------------------------------------------
+
+local function renderFoldedSegments(win, buf, foldstart)
+	local foldend = vim.fn.foldclosedend(foldstart)
+
+	-- get virtual text components
+	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
+	local virtText = {
+		{ (" "):rep(config.foldtext.padding) },
+		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
+	}
+	if config.foldtext.diagnosticsCount then
+		local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
+		if #diagnostics > 0 then
+			table.insert(virtText, { " " })
+		end
+		vim.list_extend(virtText, diagnostics)
+	end
+	if config.foldtext.gitsignsCount then
+		local hunks = getGitHunksInFold(buf, foldstart, foldend)
+		if #hunks > 0 then
+			table.insert(virtText, { " " })
+		end
+		vim.list_extend(virtText, hunks)
+	end
+
+	-- add text as extmark
+	local line = vim.api.nvim_buf_get_lines(buf, foldstart - 1, foldstart, false)[1]
+	local wininfo = vim.fn.getwininfo(win)[1]
+	local leftcol = wininfo and wininfo.leftcol or 0 ---@diagnostic disable-line: undefined-field
+	local wincol = math.max(0, vim.fn.virtcol({ foldstart, line:len() }) - leftcol)
+
+	vim.api.nvim_buf_set_extmark(buf, ns, foldstart - 1, 0, {
+		virt_text = virtText,
+		virt_text_win_col = wincol,
+		hl_mode = "combine",
+		ephemeral = true, -- only for decorators in a redraw cycle
+	})
+
+	return foldend
+end
+
+vim.api.nvim_set_decoration_provider(ns, {
+	on_win = function(_, win, buf, topline, botline)
+		local disabledFts = config.foldtext.disableOnFt
+		if vim.list_contains(disabledFts, vim.bo[buf].filetype) then
+			return
+		end
+		vim.api.nvim_win_call(win, function()
+			local line = topline
+			while line <= botline do
+				local foldstart = vim.fn.foldclosed(line)
+				if foldstart > -1 then
+					line = renderFoldedSegments(win, buf, foldstart)
+				end
+				line = line + 1
+			end
+		end)
+	end,
+})
+
+--------------------------------------------------------------------------------

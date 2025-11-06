@@ -5,7 +5,7 @@ theme = Symfonic
 
 cursor-opacity = 1
 
-cursor-style = underline
+cursor-style = bar
 cursor-color = #ffffff
 
 foreground = #ffffff
@@ -29,10 +29,11 @@ window-padding-x = 2
 window-padding-y = 2
 window-inherit-font-size = false
 
-window-decoration = false
+window-decoration = server
 gtk-tabs-location = bottom
 gtk-wide-tabs = false
 gtk-custom-css = ./tabs.css
+gtk-single-instance = false
 
 clipboard-read = allow
 clipboard-write = allow
