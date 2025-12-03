@@ -5,6 +5,7 @@ local ensured_servers = {
 	"clangd",
 	"ruff",
 	"basedpyright",
+	"gopls",
 }
 
 require("mason-lspconfig").setup({
@@ -17,8 +18,10 @@ vim.lsp.config("clangd", {
 		"clangd",
 		"--background-index",
 		"--clang-tidy",
-		"--cross-file-rename",
-		"--header-insertion=iwyu",
+		"--header-insertion=never",
+	},
+	init_options = {
+		fallbackFlags = { "-std=c23" },
 	},
 })
 
@@ -38,6 +41,17 @@ vim.lsp.config("phpactor", {
 	root_markers = { "composer.json", ".git", ".phpactor.json", ".phpactor.yml" },
 })
 
+local orig = vim.lsp.util.open_floating_preview
+---@diagnostic disable-next-line: duplicate-set-field
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or "rounded"
+	opts.max_width = opts.max_width or 80
+	opts.max_height = opts.max_height or 24
+	opts.wrap = opts.wrap ~= false
+	return orig(contents, syntax, opts, ...)
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
 	callback = function(args)
@@ -53,41 +67,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP: Disable hover capability from Ruff",
 })
 
-local function lsp_rename()
-	vim.ui.input({ prompt = "Enter new name"
-	}, function(new_name)
-		if new_name == "" then
-			return
-		end
-		vim.lsp.buf.rename(new_name)
-	end)
-end
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp Actions",
 	callback = function()
-		local bufmap = function(mode, lhs, rhs, given_opts)
-			local opts = { buffer = true }
-			vim.tbl_deep_extend("keep", opts, given_opts)
+		local map = function(mode, lhs, rhs, desc)
+			local opts = { buffer = true, desc = desc }
 			vim.keymap.set(mode, lhs, rhs, opts)
 		end
 
-		bufmap("n", "<leader>lh", '<cmd>lua vim.lsp.buf.hover({border = "rounded"})<cr>', { desc = "Hover" })
-		bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
-		bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Declaration" })
-		bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
-		bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type definition" })
-		bufmap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
-		bufmap(
-			"n",
-			"<leader>lH",
-			'<cmd>lua vim.lsp.buf.signature_help({border = "rounded"})<cr>',
-			{ desc = "Signature help" }
-		)
-		-- bufmap("n", "<F2>", lsp_rename, { desc = "Rename" })
-		bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code action" })
-		bufmap("n", "<leader>eh", "<cmd>lua vim.diagnostic.open_float()<cr>", { desc = "Open float" })
-		bufmap("n", "]e", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Goto next error" })
-		bufmap("n", "[e", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "Goto prev error" })
+		map("n", "<leader>lh", vim.lsp.buf.hover, "Hover")
+		map("n", "gd", vim.lsp.buf.definition, "Definition")
+		map("n", "gD", vim.lsp.buf.declaration, "Declaration")
+		map("n", "gi", vim.lsp.buf.implementation, "Implementation")
+		map("n", "go", vim.lsp.buf.type_definition, "Type definition")
+		map("n", "<leader>lr", vim.lsp.buf.references, "References")
+		map("n", "<leader>lH", vim.lsp.buf.signature_help, "Signature help")
+		map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+		map("n", "<leader>eh", vim.diagnostic.open_float, "Open float")
+		map("n", "]e", function()
+			vim.diagnostic.jump({ count = 1 })
+		end, "Next Diagnostic")
+		map("n", "[e", function()
+			vim.diagnostic.jump({ count = -1 })
+		end, "Prev Diagnostic")
 	end,
 })

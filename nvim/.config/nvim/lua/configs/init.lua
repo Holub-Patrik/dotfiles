@@ -1,4 +1,5 @@
 require("configs.lsp-config")
+-- require("configs.lsp-native")
 require("configs.cross_theming")
 require("configs.debug")
 require("configs.foldtext")

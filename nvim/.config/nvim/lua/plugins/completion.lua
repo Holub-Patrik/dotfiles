@@ -23,17 +23,6 @@ local M = {
 			["<S-tab>"] = { "select_prev", "snippet_backward", "fallback" },
 		},
 
-		appearance = {
-			nerd_font_variant = "normal",
-		},
-
-		signature = {
-			enabled = true,
-			window = {
-				show_documentation = false,
-			},
-		},
-
 		completion = {
 			list = {
 				selection = {
@@ -49,12 +38,13 @@ local M = {
 				winhighlight = "None:BlinkCmpMenu,None:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
 				scrollbar = false,
 			},
+			ghost_text = { enabled = true },
 		},
 
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+			default = { "lazydev", "lsp", "buffer", "path", "snippets" },
 			providers = {
 				lazydev = {
 					name = "LazyDev",
