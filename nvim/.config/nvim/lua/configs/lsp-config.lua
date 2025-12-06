@@ -67,6 +67,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP: Disable hover capability from Ruff",
 })
 
+local function lsp_rename()
+	vim.ui.input({ prompt = "Enter new name" }, function(new_name)
+		if new_name == "" then
+			return
+		end
+		vim.lsp.buf.rename(new_name)
+	end)
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp Actions",
 	callback = function()
@@ -75,20 +84,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.keymap.set(mode, lhs, rhs, opts)
 		end
 
-		map("n", "<leader>lh", vim.lsp.buf.hover, "Hover")
-		map("n", "gd", vim.lsp.buf.definition, "Definition")
-		map("n", "gD", vim.lsp.buf.declaration, "Declaration")
-		map("n", "gi", vim.lsp.buf.implementation, "Implementation")
-		map("n", "go", vim.lsp.buf.type_definition, "Type definition")
-		map("n", "<leader>lr", vim.lsp.buf.references, "References")
-		map("n", "<leader>lH", vim.lsp.buf.signature_help, "Signature help")
-		map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
-		map("n", "<leader>eh", vim.diagnostic.open_float, "Open float")
-		map("n", "]e", function()
+		bufmap("n", "<leader>lh", function()
+			vim.lsp.buf.hover({ border = "rounded" })
+		end, { desc = "Hover" })
+		bufmap("n", "gd", vim.lsp.buf.definition, { desc = "Definition" })
+		bufmap("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration" })
+		bufmap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
+		bufmap("n", "go", vim.lsp.buf.type_definition, { desc = "Type definition" })
+		bufmap("n", "<leader>lr", vim.lsp.buf.references, { desc = "References" })
+		bufmap("n", "<leader>lH", function()
+			vim.lsp.buf.signature_help({ border = "rounded" })
+		end, { desc = "Signature help" })
+		-- bufmap("n", "<F2>", lsp_rename, { desc = "Rename" })
+		bufmap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+		bufmap("n", "<leader>eh", vim.diagnostic.open_float, { desc = "Open float" })
+		bufmap("n", "]e", function()
 			vim.diagnostic.jump({ count = 1 })
-		end, "Next Diagnostic")
-		map("n", "[e", function()
+		end, { desc = "Goto next error" })
+		bufmap("n", "[e", function()
 			vim.diagnostic.jump({ count = -1 })
-		end, "Prev Diagnostic")
+		end, { desc = "Goto prev error" })
 	end,
 })

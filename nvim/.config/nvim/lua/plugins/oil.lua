@@ -7,7 +7,14 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 	config = function()
 		local oil = require("oil")
-		oil.setup({})
-		vim.keymap.set("n", "<leader>ft", oil.toggle_float, { desc = "Open File View" })
+		oil.setup({
+			float = {
+				max_width = 0.5,
+				max_height = 0.5,
+				padding = 0,
+				border = 'rounded',
+			}
+		})
+		vim.keymap.set("n", "<leader>o", oil.toggle_float, { desc = "Open File View" })
 	end
 }
