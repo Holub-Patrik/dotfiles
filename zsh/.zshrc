@@ -33,8 +33,6 @@ fi
 # now I know why selecet must equal -1
 # the select options says when to show the menu
 # The number of mathes can never be -1 so it never will open the menu
-# ---
-# added complete-options and complete
 zstyle ':completion:*' menu select=-1 complete-options true complete true
 bindkey '^[[Z' reverse-menu-complete
 
@@ -45,7 +43,6 @@ function clear-screen-and-scrollback() {
 zle -N clear-screen-and-scrollback
 bindkey '^L' clear-screen-and-scrollback
 
-# add the odin binary
 export PATH="$PATH:$HOME/Odin"
 export GIT_EDITOR="nvim"
 
@@ -71,7 +68,6 @@ alias ls="eza --icons=always"
 alias la="eza -a --icons=always"
 alias ll="eza -al --icons=always"
 alias lt="eza -a --tree --icons=always"
-# alias cleanup="sudo pacman -Rsn `(pacman -Qtdq)`"
 
 
 # BEGIN opam configuration
@@ -82,12 +78,16 @@ alias lt="eza -a --tree --icons=always"
 [[ ! -r '/home/holubpat/.opam/opam-init/init.zsh' ]] || source '/home/holubpat/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
-[ -f "/home/holubpat/.ghcup/env" ] && . "/home/holubpat/.ghcup/env" # ghcup-env
-
 export PHP_CS_FIXER_IGNORE_ENV=1
 
 # Created by `pipx` on 2025-04-24 15:30:38
 export PATH="$PATH:/home/holubpat/.local/bin"
+
+if [[ -d "/home/holubpat/InTCPtor" ]]; then
+  export PATH="$PATH:/home/holubpat/InTCPtor/build" 
+fi
+
+export PATH="$PATH:/home/holubpat/.cargo/bin"
 
 # bat coloring for manpages
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
@@ -153,3 +153,11 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # This needs to stay at the end
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# bun completions
+[ -s "/home/holubpat/.bun/_bun" ] && source "/home/holubpat/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
