@@ -43,7 +43,13 @@ function clear-screen-and-scrollback() {
 zle -N clear-screen-and-scrollback
 bindkey '^L' clear-screen-and-scrollback
 
-export PATH="$PATH:$HOME/Odin"
+# add the odin and ols binary
+if [ -d "$HOME/Odin" ]; then
+  export PATH="$PATH:$HOME/Odin"
+fi
+if [ -d "$HOME/ols" ]; then
+  export PATH="$PATH:$HOME/ols"
+fi
 export GIT_EDITOR="nvim"
 
 # Set up fzf key bindings and fuzzy completion
