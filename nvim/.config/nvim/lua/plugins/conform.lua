@@ -25,6 +25,8 @@ return {
 			-- php-cs-fixer is slow on "larger files"
 			php = { "php_cs_fixer", timeout_ms = 2500 },
 			typst = { "prettypst" },
+			tex = { "tex-fmt" },
+			latex = { "tex-fmt" },
 		},
 		default_format_opts = {
 			lsp_format = "fallback",

@@ -21,9 +21,6 @@ vim.g.maplocalleader = " "
 if vim.g.vscode then
 	return
 else
-	vim.g.vimtex_view_method = "zathura"
-	vim.g.vimtex_compiler_method = "tectonic"
-	
 	require("lazy").setup({
 		change_detection = { enabled = false },
 		spec = {
