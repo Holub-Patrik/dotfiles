@@ -1,0 +1,8 @@
+[SddmGreeterTheme]
+Name=kath_theme
+Type=sddm-theme
+ConfigFile=hyprland_kath.conf
+MainScript=Main.qml
+Theme-Id=kath-theme
+Theme-API=2.0
+QtVersion=6
