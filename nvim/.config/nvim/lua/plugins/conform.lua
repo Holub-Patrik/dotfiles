@@ -27,6 +27,7 @@ return {
 			typst = { "prettypst" },
 			tex = { "tex-fmt" },
 			latex = { "tex-fmt" },
+			markdown = { "mdformat" },
 		},
 		default_format_opts = {
 			lsp_format = "fallback",
