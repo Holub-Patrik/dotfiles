@@ -91,7 +91,7 @@ build() {
 		ln -sf "$bin_folder"/compile_commands.json compile_commands.json
 	fi
 
-	make -C $bin_folder
+	cmake --build $bin_folder
 }
 
 rebuild() {
@@ -111,8 +111,6 @@ rebuild() {
 		..
 	cd ..
 	ln -sf "$bin_folder"/compile_commands.json compile_commands.json
-
-	make -C $bin_folder
 }
 
 run() {

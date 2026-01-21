@@ -12,3 +12,8 @@ sudo pacman -S \
 	texlive-mathscience \
 	texlive-langczechslovak \
 	texlive-binextra
+
+sudo pacman -S zathura zathura-pdf-mupdf
+# for svgs
+sudo pacman -S inkscape 
+cargo install tex-fmt

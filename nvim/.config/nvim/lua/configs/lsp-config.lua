@@ -20,9 +20,6 @@ vim.lsp.config("clangd", {
 		"--clang-tidy",
 		"--header-insertion=never",
 	},
-	init_options = {
-		fallbackFlags = { "-std=c23" },
-	},
 })
 
 vim.lsp.config("basedpyright", {
