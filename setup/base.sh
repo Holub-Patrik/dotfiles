@@ -8,5 +8,6 @@ sudo pacman -S base-devel git \
 	neovim python-pynvim tree-sitter-cli \
 	stow \
 	sbctl vivaldi ncspot \
-	yazi fzf eza micro bat ncdu
+	yazi fzf eza micro bat ncdu \
+	nwg-displays fuzzel quickshell
 
