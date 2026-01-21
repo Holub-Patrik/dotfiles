@@ -1,2 +1,0 @@
-I am including this as a dotfile since it is a sort of configuration
-vivaldi --enable-features=VaapiVideoDecodeLinuxGL --use-gl=angle --use-angle=gl --ozone-platform=wayland

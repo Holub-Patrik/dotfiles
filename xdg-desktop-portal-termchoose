@@ -1,0 +1,2 @@
+put this line into xdg-desktop-portal/portals.conf
+org.freedesktop.impl.portal.FileChooser=termfilechooser

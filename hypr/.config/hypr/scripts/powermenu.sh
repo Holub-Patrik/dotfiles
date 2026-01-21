@@ -8,7 +8,7 @@ reboot="󰜉 Reboot"
 shutdown="󰐥 Shutdown"
 
 # Fuzzel CMD
-rofi_cmd() {
+fuzzel_cmd() {
     fuzzel --dmenu \
         --prompt="Power Menu: " \
         --lines=5 \
@@ -16,8 +16,8 @@ rofi_cmd() {
 }
 
 # Pass variables to command
-run_rofi() {
-    echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
+run_fuzzel() {
+    echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | fuzzel_cmd
 }
 
 # Execute Command
@@ -42,7 +42,7 @@ run_cmd() {
 }
 
 # Actions
-chosen="$(run_rofi)"
+chosen="$(run_fuzzel)"
 case ${chosen} in
     $shutdown)
         run_cmd --shutdown
