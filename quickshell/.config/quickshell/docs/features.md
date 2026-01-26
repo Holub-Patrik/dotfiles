@@ -13,3 +13,11 @@
 - **Format**: 24-hour (hh:mm).
 - **Position**: Right aligned.
 - **Style**: White text, matching workspaces.
+
+### System Tray
+- **Source**: System Tray (DBus)
+- **Position**: Right aligned (left of Clock).
+- **Interaction**:
+  - Left Click: Activate item.
+  - Right Click: Open menu (if available).
+- **Style**: Icons size matches font size.

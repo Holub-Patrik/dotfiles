@@ -25,10 +25,19 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        // Right side: Clock
-        Clock {
+        // Right side: Tray + Clock
+        Row {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
+            spacing: 10
+
+            Tray {
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Clock {
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
     }
 }
