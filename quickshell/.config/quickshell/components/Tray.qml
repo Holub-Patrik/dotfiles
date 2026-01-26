@@ -38,7 +38,11 @@ Row {
                         modelData.activate()
                     } else if (mouse.button === Qt.RightButton) {
                         if (modelData.menu) {
-                            menuAnchor.toggle()
+                            if (menuAnchor.visible) {
+                                menuAnchor.close()
+                            } else {
+                                menuAnchor.open()
+                            }
                         }
                     }
                 }
