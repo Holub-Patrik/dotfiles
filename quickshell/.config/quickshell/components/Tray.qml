@@ -34,8 +34,8 @@ Item {
             gravity: Edges.Bottom | Edges.Left
         }
 
-        width: trayRow.width + 10
-        height: trayRow.height + 10
+        implicitWidth: trayRow.width + 10
+        implicitHeight: trayRow.height + 10
         color: "black" // OLED design first
 
         Row {
