@@ -6,13 +6,6 @@ import ".."
 Row {
     id: root
     spacing: 5
-
-    Text {
-        text: "| " + SystemTray.items.length
-        color: "red" // High visibility for debug
-        font.pixelSize: Config.fontSize
-        font.family: Config.fontMain
-    }
     
     Repeater {
         model: SystemTray.items
