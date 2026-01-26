@@ -11,6 +11,7 @@ Row {
         model: SystemTray.items
         
         delegate: Image {
+            id: trayIcon
             required property var modelData
             
             width: Config.fontSize
@@ -18,6 +19,16 @@ Row {
             
             // Assume modelData.icon provides a valid image source (URL or icon name handled by Qt/Quickshell)
             source: modelData.icon
+
+            QsMenuAnchor {
+                id: menuAnchor
+                menu: modelData.menu
+                anchor {
+                    item: trayIcon
+                    gravity: Edges.Bottom | Edges.Right
+                    edges: Edges.Bottom | Edges.Left
+                }
+            }
             
             MouseArea {
                 anchors.fill: parent
@@ -27,10 +38,7 @@ Row {
                         modelData.activate()
                     } else if (mouse.button === Qt.RightButton) {
                         if (modelData.menu) {
-                            // Assuming menu has an open method that takes coordinates or a target
-                            // or it might be a context menu that needs to be instantiated.
-                            // For now, let's try calling open() if it exists.
-                            modelData.menu.open()
+                            menuAnchor.toggle()
                         }
                     }
                 }
