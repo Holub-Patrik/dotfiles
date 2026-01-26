@@ -83,5 +83,8 @@ as they will most likely not work, if you try to replace big blocks of code.
 Similarly, update the files often, as they may be changed in between prompts.
 Do not assume the file looks the same as it did last time.
 
+### Sources
+Quickshell reference: https://github.com/quickshell-mirror/quickshell
+
 ## Other notes
 Other notes will be expanded when they come
