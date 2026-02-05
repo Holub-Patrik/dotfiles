@@ -4,7 +4,8 @@ local ensured_servers = {
 	"rust_analyzer",
 	"clangd",
 	"ruff",
-	"basedpyright",
+	-- "basedpyright",
+	"ty",
 	"gopls",
 }
 
@@ -22,16 +23,16 @@ vim.lsp.config("clangd", {
 	},
 })
 
-vim.lsp.config("basedpyright", {
-	settings = {
-		basedpyright = {
-			disableOrganizeImports = true,
-			analysis = {
-				typeCheckingMode = "standard",
-			},
-		},
-	},
-})
+-- vim.lsp.config("basedpyright", {
+-- 	settings = {
+-- 		basedpyright = {
+-- 			disableOrganizeImports = true,
+-- 			analysis = {
+-- 				typeCheckingMode = "standard",
+-- 			},
+-- 		},
+-- 	},
+-- })
 
 vim.lsp.config("phpactor", {
 	root_dir = nil,
@@ -63,15 +64,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 	desc = "LSP: Disable hover capability from Ruff",
 })
-
-local function lsp_rename()
-	vim.ui.input({ prompt = "Enter new name" }, function(new_name)
-		if new_name == "" then
-			return
-		end
-		vim.lsp.buf.rename(new_name)
-	end)
-end
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Lsp Actions",
