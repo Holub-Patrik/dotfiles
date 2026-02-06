@@ -43,6 +43,7 @@ function clear-screen-and-scrollback() {
 zle -N clear-screen-and-scrollback
 bindkey '^L' clear-screen-and-scrollback
 
+# prefer packaged to keep up to date
 # add the odin and ols binary
 if [ -d "$HOME/Odin" ]; then
   export PATH="$PATH:$HOME/Odin"
@@ -149,6 +150,8 @@ bindkey '^h' cd-hidden
 bindkey -M emacs '^h' cd-hidden
 bindkey -M vicmd '^h' cd-hidden
 bindkey -M viins '^h' cd-hidden
+
+alias vol="~/.config/hypr/scripts/volume.sh --get"
 
 # Source prompt configuration
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
