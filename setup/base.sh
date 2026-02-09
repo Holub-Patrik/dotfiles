@@ -9,5 +9,9 @@ sudo pacman -S base-devel git \
 	stow \
 	sbctl vivaldi ncspot \
 	yazi 7zip fzf eza micro bat ncdu \
-	nwg-displays fuzzel quickshell hyprpaper
+	nwg-displays fuzzel quickshell hyprpaper \
+	unzip
 
+git config --global user.email "23bulohp@gmail.com"
+git config --global user.name "Holub Patrik"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
