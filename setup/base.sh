@@ -4,7 +4,7 @@
 sudo pacman -S base-devel git \
 	zsh zsh-syntax-highlighting \
 	ghostty ghostty-terminfo ghostty-shell-integration \
-	clang rustup lldb odin zig python nodejs npm python-pipx uv cmake libc++ onetbb \
+	clang rustup lldb llvm odin zig python nodejs npm python-pipx uv cmake libc++ onetbb \
 	neovim python-pynvim tree-sitter-cli \
 	stow \
 	sbctl vivaldi ncspot \
