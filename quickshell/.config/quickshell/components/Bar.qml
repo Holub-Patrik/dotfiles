@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Services.UPower
 
 PanelWindow {
     id: bar
@@ -33,6 +34,11 @@ PanelWindow {
 
             Tray {
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Battery {
+                anchors.verticalCenter: parent.verticalCenter
+                visible: UPower.displayDevice && UPower.displayDevice.isPresent
             }
 
             Clock {
