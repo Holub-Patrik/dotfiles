@@ -6,7 +6,7 @@ local ensured_servers = {
 	"ruff",
 	-- "basedpyright",
 	"ty",
-	"gopls",
+	-- "gopls",
 }
 
 require("mason-lspconfig").setup({

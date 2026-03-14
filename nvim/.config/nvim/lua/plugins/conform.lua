@@ -19,8 +19,8 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "ruff_format" },
-			c = { "clangd" },
-			cpp = { "clangd" },
+			c = { "clang-format" },
+			cpp = { "clang-format" },
 			odin = { lsp_format = "prefer" },
 			-- php-cs-fixer is slow on "larger files"
 			php = { "php_cs_fixer", timeout_ms = 2500 },
