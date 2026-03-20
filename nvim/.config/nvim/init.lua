@@ -21,12 +21,17 @@ vim.g.maplocalleader = " "
 if vim.g.vscode then
 	return
 else
-	require("lazy").setup({
-		change_detection = { enabled = false },
-		spec = {
-			{ import = "plugins" },
-		},
-	})
+	if vim.version().minor < 12 then
+		require("lazy").setup({
+			change_detection = { enabled = false },
+			spec = {
+				{ import = "plugins" },
+			},
+		})
+	else
+		vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })
+		require('zpack').setup()
+	end
 
 	require("options")
 	require("mappings")
