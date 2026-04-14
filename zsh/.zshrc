@@ -51,6 +51,9 @@ fi
 if [ -d "$HOME/ols" ]; then
   export PATH="$PATH:$HOME/ols"
 fi
+if [ -d "$HOME/dingo" ]; then
+  export PATH="$PATH:$HOME/dingo"
+fi
 export GIT_EDITOR="nvim"
 
 # Set up fzf key bindings and fuzzy completion
