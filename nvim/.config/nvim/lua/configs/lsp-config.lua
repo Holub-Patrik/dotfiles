@@ -95,3 +95,35 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, "Goto prev error")
 	end,
 })
+
+vim.api.nvim_create_user_command('LspStop', function(info)
+	local client_names = info.fargs
+
+	-- Default to disabling all servers on current buffer
+	if #client_names == 0 then
+		client_names = vim
+				.iter(vim.lsp.get_clients())
+				:map(function(client)
+					return client.name
+				end)
+				:totable()
+	end
+
+	for name in vim.iter(client_names) do
+		if vim.lsp.config[name] == nil then
+			vim.notify(("Invalid server name '%s'"):format(name))
+		else
+			vim.lsp.enable(name, false)
+			if info.bang then
+				vim.iter(vim.lsp.get_clients({ name = name })):each(function(client)
+					client:stop(true)
+				end)
+			end
+		end
+	end
+end, {
+	desc = 'Disable and stop the given client',
+	nargs = '?',
+	bang = true,
+	complete = complete_client,
+})

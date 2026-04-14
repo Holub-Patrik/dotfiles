@@ -1,3 +1,10 @@
-curseforge
-viu
-mdformat
+# Ignore everything by default
+*
+# But do not ignore this file
+!.gitignore
+
+# Whitelist personal scripts
+!cmake-build
+!forgor
+!remove_spaces
+!mdformat
