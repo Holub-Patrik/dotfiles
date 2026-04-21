@@ -12,6 +12,7 @@ A collection of personal utility scripts for development and system management.
 
 ## Hyprland Helper Scripts
 These are located in `hypr/scripts/`:
+- `calculator.sh`: A small floating terminal running `qalc`.
 - `powermenu.sh`: System power management menu.
 - `screenshot.sh`: Screenshot utility.
 - `volume.sh`: Volume control helper.

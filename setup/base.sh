@@ -10,6 +10,7 @@ sudo pacman -S base-devel git \
 	sbctl vivaldi ncspot \
 	yazi 7zip fzf eza micro bat ncdu \
 	nwg-displays fuzzel quickshell hyprpaper \
+	libqalculate \
 	unzip man man-db
 
 git config --global user.email "23bulohp@gmail.com"

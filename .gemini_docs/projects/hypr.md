@@ -14,6 +14,7 @@ This is a minimal Hyprland configuration focused on simplicity, efficiency, and 
 - **Editor:** Neovim (Nvim)
 - **Terminal:** Kitty
 - **File Manager:** Thunar
+- **Calculator:** libqalculate (qalc)
 
 ## Evolution
 
@@ -26,3 +27,9 @@ This directory is present in hypr/.config/hypr/JaKooLit for reference
 - `conf/keybinds.conf`: Keybindings.
 - `conf/startup.conf`: Autostart applications.
 - `conf/colors.conf`: Aesthetic settings.
+
+## Configuration Standards
+
+- **Window Rules:** Use the modern `windowrule` syntax (v0.48+). Avoid the deprecated `windowrulev2`.
+  - Format: `windowrule = match:<field> <pattern>, <action> <value>`
+  - Example: `windowrule = match:class (kitty), float 1`
