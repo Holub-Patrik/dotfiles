@@ -6,6 +6,7 @@ local M = {
 		local builtin = require("fzf-lua")
 
 		vim.keymap.set("n", "ff", builtin.files, { desc = "FzF-Lua Files" })
+		vim.keymap.set("n", "fF", builtin.git_files, { desc = "FzF-Lua Git Files" })
 		vim.keymap.set("n", "fb", builtin.buffers, { desc = "FzF-Lua Buffers" })
 		vim.keymap.set("n", "fg", builtin.live_grep, { desc = "FzF-Lua Live Grep" })
 	end

@@ -18,18 +18,28 @@ This is a minimal Hyprland configuration focused on simplicity, efficiency, and 
 
 ## Evolution
 
-Originally based on JaKooLit's Hyprland dots, but transitioning to a custom implementation.
-This directory is present in hypr/.config/hypr/JaKooLit for reference
+Originally based on JaKooLit's Hyprland dots, but transitioned to a unified modern Lua configuration.
+The legacy `.conf` files are kept as references, but `hyprland.lua` is the active configuration file.
 
 ## Main Configuration Files
 
-- `hyprland.conf`: Main configuration.
-- `conf/keybinds.conf`: Keybindings.
-- `conf/startup.conf`: Autostart applications.
-- `conf/colors.conf`: Aesthetic settings.
+- `hyprland.lua`: Unified active configuration file.
+- `.luarc.json`: Configuration for `lua_ls` Language Server to map Hyprland stubs.
 
 ## Configuration Standards
 
-- **Window Rules:** Use the modern `windowrule` syntax (v0.48+). Avoid the deprecated `windowrulev2`.
-  - Format: `windowrule = match:<field> <pattern>, <action> <value>`
-  - Example: `windowrule = match:class (kitty), float 1`
+- **Configuration:** Handled via standard structured Lua tables using the `hl.config()` API.
+- **Window Rules:** Defined using `hl.window_rule({ match = { ... }, ... })` using matching tables and action properties.
+  - Example:
+    ```lua
+    hl.window_rule({
+        name  = "floating-shell",
+        match = { class = "floating_shell" },
+        float  = true,
+        size   = "600 400",
+        center = true,
+    })
+    ```
+- **Keybindings:** Defined using `hl.bind("MOD + Key", hl.dsp.action(), [options])`. Workspaces and other repetitive keybinds are generated programmatically using standard Lua loops.
+- **LSP Stubs:** To provide editor auto-completion and diagnostics, `.luarc.json` maps the stubs directory (`/usr/share/hypr/stubs/`) and declares the global variable `hl`.
+

@@ -24,3 +24,11 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "<CR>", "<CR>:ccl<CR>", { noremap = true, buffer = true, silent = true })
 	end,
 })
+
+vim.keymap.set('n', '<leader>/', 'gcc', { remap = true, desc = "Toggle line comment" })
+vim.keymap.set('v', '<leader>/', 'gc', { remap = true, desc = "Toggle comment (visual)" })
+vim.keymap.set('o', '<leader>/', 'gc', { remap = true, desc = "Comment text object" })
+
+vim.keymap.set('n', '<leader>\\', 'gb', { remap = true, desc = "Block comment operator" })
+vim.keymap.set('n', '<leader>\\\\', 'gbc', { remap = true, desc = "Toggle block comment" })
+vim.keymap.set('v', '<leader>\\', 'gb', { remap = true, desc = "Toggle block comment (visual)" })

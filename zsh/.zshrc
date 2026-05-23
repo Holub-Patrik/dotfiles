@@ -149,10 +149,10 @@ ncd-hidden() {
 }
 
 zle -N ncd-hidden
-bindkey '^h' cd-hidden
-bindkey -M emacs '^h' cd-hidden
-bindkey -M vicmd '^h' cd-hidden
-bindkey -M viins '^h' cd-hidden
+bindkey '^h' ncd-hidden
+bindkey -M emacs '^h' ncd-hidden
+bindkey -M vicmd '^h' ncd-hidden
+bindkey -M viins '^h' ncd-hidden
 
 alias vol="~/.config/hypr/scripts/volume.sh --get"
 
@@ -163,13 +163,8 @@ alias vol="~/.config/hypr/scripts/volume.sh --get"
 # set the configured theme
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
+# Added by Antigravity CLI installer
+export PATH="/home/holubpat/.local/bin:$PATH"
+
 # This needs to stay at the end
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# bun completions
-[ -s "/home/holubpat/.bun/_bun" ] && source "/home/holubpat/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
