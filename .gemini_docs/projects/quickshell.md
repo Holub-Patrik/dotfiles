@@ -12,12 +12,15 @@ This project implements the shell (bar/desktop) for the Linux setup using [Quick
 - `shell.qml`: Main entry point.
 - `Config.qml`: Configuration options.
 - `components/`: Individual shell components.
+  - `Tray.qml`: System tray icons & consolidated OLED QuickSettings dropdown (volume & brightness sliders).
 
-## Rules for Development
-- **Git Branching:** Work in branches and merge new features.
-- **File Structure:** Use separate files in branches and consolidate them during merge if necessary.
-- **Iterative Updates:** Files are saved and formatted often; visuals are updated frequently based on user feedback.
-- **Precision:** Use granular search and replace to avoid breaking code blocks.
+## Features
+- **Consolidated System Tray Dropdown:** The tray component toggles a beautiful OLED popup card (`#000000` true black, 1px white border) containing:
+  - System tray application indicators (e.g. Vesktop).
+  - A subtle divider separator line.
+  - An interactive Volume slider/percentage indicator (clickable and draggable).
+  - An interactive Brightness slider/percentage indicator (clickable and draggable).
+- **Quickshell IPC Integration:** State properties are updated in real-time by keyboard hotkey presses or external system changes via an `IpcHandler` endpoint targeting `"volume_brightness"`.
 
 ## Resources
 - Quickshell Reference: https://github.com/quickshell-mirror/quickshell

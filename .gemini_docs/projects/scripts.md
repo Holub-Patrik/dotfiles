@@ -12,6 +12,7 @@ A collection of personal utility scripts for development and system management.
 
 ## Hyprland Helper Scripts
 These are located in `hypr/scripts/`:
+- `brightness.sh`: Monitor brightness control helper.
 - `calculator.sh`: A small floating terminal running `qalc`.
 - `powermenu.sh`: System power management menu.
 - `screenshot.sh`: Screenshot utility.
