@@ -1,4 +1,6 @@
 import QtQuick
+import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Services.SystemTray
 import Quickshell.Io
@@ -134,25 +136,184 @@ Item {
         
         anchor {
             window: root.barWindow
-            rect.x: barWindow ? (barWindow.width - width - 10) : 0
-            rect.y: barWindow ? (barWindow.height + 6) : 0
+            rect.x: barWindow ? Math.max(0, Math.min(root.mapToItem(barWindow.contentItem, 0, 0).x - width / 2 + root.width / 2, barWindow.width - width)) : 0
+            rect.y: barWindow ? barWindow.height : 0
         }
 
-        implicitWidth: 220
-        implicitHeight: 164 // Slightly increased height to accommodate slider containers comfortably
+        property int connectionRadius: 5
+        property int cardRadius: 5
+        property int cardWidth: 150
+        property int cardHeight: 164
+        property int fadeLength: 10
+
+        implicitWidth: cardWidth + 2 * connectionRadius + 2 * fadeLength
+        implicitHeight: cardHeight + connectionRadius
         color: "transparent"
 
         // Elegant OLED-first card container with smooth animations
-        Rectangle {
+        Item {
             id: container
             width: parent.width
             height: parent.height
             y: 0
-            color: "#000000" // True black background
-            border.color: "#ffffff" // Sleek high-contrast white outline border
-            border.width: 1
-            radius: 4
             opacity: 0.0
+
+            // Custom shape for the premium connected true black background
+            Shape {
+                id: bgShape
+                anchors.fill: parent
+
+                ShapePath {
+                    strokeWidth: 0
+                    strokeColor: "transparent"
+                    fillColor: "#000000" // True black
+
+                    startX: trayPopup.fadeLength
+                    startY: 0
+
+                    PathArc {
+                        x: trayPopup.fadeLength + trayPopup.connectionRadius
+                        y: trayPopup.connectionRadius
+                        radiusX: trayPopup.connectionRadius
+                        radiusY: trayPopup.connectionRadius
+                        direction: PathArc.Clockwise
+                    }
+
+                    PathLine {
+                        x: trayPopup.fadeLength + trayPopup.connectionRadius
+                        y: bgShape.height - trayPopup.cardRadius
+                    }
+
+                    PathArc {
+                        x: trayPopup.fadeLength + trayPopup.connectionRadius + trayPopup.cardRadius
+                        y: bgShape.height
+                        radiusX: trayPopup.cardRadius
+                        radiusY: trayPopup.cardRadius
+                        direction: PathArc.Counterclockwise
+                    }
+
+                    PathLine {
+                        x: bgShape.width - trayPopup.fadeLength - trayPopup.connectionRadius - trayPopup.cardRadius
+                        y: bgShape.height
+                    }
+
+                    PathArc {
+                        x: bgShape.width - trayPopup.fadeLength - trayPopup.connectionRadius
+                        y: bgShape.height - trayPopup.cardRadius
+                        radiusX: trayPopup.cardRadius
+                        radiusY: trayPopup.cardRadius
+                        direction: PathArc.Counterclockwise
+                    }
+
+                    PathLine {
+                        x: bgShape.width - trayPopup.fadeLength - trayPopup.connectionRadius
+                        y: trayPopup.connectionRadius
+                    }
+
+                    PathArc {
+                        x: bgShape.width - trayPopup.fadeLength
+                        y: 0
+                        radiusX: trayPopup.connectionRadius
+                        radiusY: trayPopup.connectionRadius
+                        direction: PathArc.Clockwise
+                    }
+
+                    PathLine {
+                        x: trayPopup.fadeLength
+                        y: 0
+                    }
+                }
+            }
+
+            // Custom shape for the outline border (solid violet)
+            Shape {
+                id: borderShape
+                anchors.fill: parent
+
+                ShapePath {
+                    strokeWidth: 1
+                    strokeColor: "#cba6f7" // Matches Hyprland active border color
+                    fillColor: "transparent"
+
+                    startX: trayPopup.fadeLength
+                    startY: 0
+
+                    PathArc {
+                        x: trayPopup.fadeLength + trayPopup.connectionRadius
+                        y: trayPopup.connectionRadius
+                        radiusX: trayPopup.connectionRadius
+                        radiusY: trayPopup.connectionRadius
+                        direction: PathArc.Clockwise
+                    }
+
+                    PathLine {
+                        x: trayPopup.fadeLength + trayPopup.connectionRadius
+                        y: borderShape.height - trayPopup.cardRadius
+                    }
+
+                    PathArc {
+                        x: trayPopup.fadeLength + trayPopup.connectionRadius + trayPopup.cardRadius
+                        y: borderShape.height
+                        radiusX: trayPopup.cardRadius
+                        radiusY: trayPopup.cardRadius
+                        direction: PathArc.Counterclockwise
+                    }
+
+                    PathLine {
+                        x: borderShape.width - trayPopup.fadeLength - trayPopup.connectionRadius - trayPopup.cardRadius
+                        y: borderShape.height
+                    }
+
+                    PathArc {
+                        x: borderShape.width - trayPopup.fadeLength - trayPopup.connectionRadius
+                        y: borderShape.height - trayPopup.cardRadius
+                        radiusX: trayPopup.cardRadius
+                        radiusY: trayPopup.cardRadius
+                        direction: PathArc.Counterclockwise
+                    }
+
+                    PathLine {
+                        x: borderShape.width - trayPopup.fadeLength - trayPopup.connectionRadius
+                        y: trayPopup.connectionRadius
+                    }
+
+                    PathArc {
+                        x: borderShape.width - trayPopup.fadeLength
+                        y: 0
+                        radiusX: trayPopup.connectionRadius
+                        radiusY: trayPopup.connectionRadius
+                        direction: PathArc.Clockwise
+                    }
+                }
+            }
+
+            // Left horizontal fading outline extension along the bar
+            LinearGradient {
+                x: 0
+                y: 0
+                width: trayPopup.fadeLength
+                height: 1
+                start: Qt.point(0, 0)
+                end: Qt.point(width, 0)
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "transparent" }
+                    GradientStop { position: 1.0; color: "#cba6f7" }
+                }
+            }
+
+            // Right horizontal fading outline extension along the bar
+            LinearGradient {
+                x: borderShape.width - trayPopup.fadeLength
+                y: 0
+                width: trayPopup.fadeLength
+                height: 1
+                start: Qt.point(0, 0)
+                end: Qt.point(width, 0)
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#cba6f7" }
+                    GradientStop { position: 1.0; color: "transparent" }
+                }
+            }
 
             // Smooth opening animation: fade in and slide down
             ParallelAnimation {
@@ -183,11 +344,18 @@ Item {
                 }
             }
 
-            Column {
-                id: mainCol
-                anchors.fill: parent
-                anchors.margins: 12
-                spacing: 12
+            Item {
+                id: contentArea
+                x: trayPopup.fadeLength + trayPopup.connectionRadius
+                y: trayPopup.connectionRadius
+                width: trayPopup.cardWidth
+                height: trayPopup.cardHeight
+
+                Column {
+                    id: mainCol
+                    anchors.fill: parent
+                    anchors.margins: 12
+                    spacing: 12
 
                 // --- Part 1: System Tray Row (Vesktop, etc.) ---
                 Row {
@@ -251,7 +419,7 @@ Item {
                     spacing: 2
 
                     Text {
-                        text: root.isMuted ? "󰅖 Muted" : ` Volume: ${root.volumeLevel}%`
+                        text: root.isMuted ? "󰅖 Muted" : ` Vol: ${root.volumeLevel}%`
                         color: Config.textColor
                         font.pixelSize: Config.fontSize - 3
                         font.family: Config.fontMain
@@ -301,7 +469,7 @@ Item {
                     spacing: 2
 
                     Text {
-                        text: ` Brightness: ${root.brightnessLevel}%`
+                        text: ` Bri: ${root.brightnessLevel}%`
                         color: Config.textColor
                         font.pixelSize: Config.fontSize - 3
                         font.family: Config.fontMain
@@ -343,6 +511,7 @@ Item {
                         }
                     }
                 }
+            }
             }
         }
     }

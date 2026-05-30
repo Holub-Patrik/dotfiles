@@ -15,16 +15,16 @@ This project implements the shell (bar/desktop) for the Linux setup using [Quick
   - `Tray.qml`: System tray icons & consolidated OLED QuickSettings dropdown (volume & brightness sliders).
 
 ## Features
-- **Consolidated System Tray Dropdown:** The tray component toggles a beautiful OLED popup card (`#000000` true black, 1px white border) containing:
+- **Consolidated System Tray Dropdown:** The tray component toggles a beautiful connected OLED popup card (`#000000` true black) containing:
   - System tray application indicators (e.g. Vesktop).
   - A subtle divider separator line.
   - An interactive Volume slider/percentage indicator (clickable and draggable).
   - An interactive Brightness slider/percentage indicator (clickable and draggable).
+- **Connected Dropdown Silhouette:** Renders a gorgeous visual bridge to the bar using custom QML `Shape` components with matching `5px` outer connection radii and bottom corner rounding. The outline border is styled in the exact Hyprland active border color (`#cba6f7` Violet) and remains **fully solid** along the entire connecting curves and card sides. To create a flawless visual fade into the bar, the curves extend horizontally along the bar's bottom edge by `15px` (`fadeLength: 15`) and utilize horizontal `LinearGradient` extensions that **smoothly fade to transparent** at their tips. This ensures a solid, beautifully defined violet transition that looks exceptionally clean on empty workspaces and blends seamlessly with Hyprland active window borders when present.
 - **Quickshell IPC Integration:** State properties are updated in real-time by keyboard hotkey presses or external system changes via an `IpcHandler` endpoint targeting `"volume_brightness"`.
 
 ## Future Roadmap & Ideas
-- **Connected Dropdown Silhouette:** Draw a visual silhouette (e.g., using a custom triangle connector shape or smooth gradient merging) to make all dropdown popups feel physically "connected" to the main status bar rather than floating, inspired by premium shells like Noctalia.
-- **Coherent QT/GTK Theme:** Design a custom QT/Kvantum and GTK theme that matches the bar's OLED-first true black and high-contrast outline design. This would styling application menus (such as Vesktop's right-click menu) in perfect harmony with the desktop shell.
+- **Coherent QT/GTK Theme:** Design a custom QT/Kvantum and GTK theme that matches the bar's OLED-first true black and high-contrast outline design. This would style application menus (such as Vesktop's right-click menu) in perfect harmony with the desktop shell.
 
 ## Resources
 - Quickshell Reference: https://github.com/quickshell-mirror/quickshell
