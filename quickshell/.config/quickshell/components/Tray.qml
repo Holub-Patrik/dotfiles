@@ -143,7 +143,7 @@ Item {
         property int connectionRadius: 5
         property int cardRadius: 5
         property int cardWidth: 150
-        property int cardHeight: 164
+        property int cardHeight: mainCol.implicitHeight + 24
         property int fadeLength: 10
 
         implicitWidth: cardWidth + 2 * connectionRadius + 2 * fadeLength
@@ -353,7 +353,9 @@ Item {
 
                 Column {
                     id: mainCol
-                    anchors.fill: parent
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     anchors.margins: 12
                     spacing: 12
 
@@ -362,8 +364,10 @@ Item {
                     id: trayRow
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 8
+                    visible: trayRepeater.count > 0
                     
                     Repeater {
+                        id: trayRepeater
                         model: SystemTray.items
                         
                         delegate: Image {
@@ -411,6 +415,7 @@ Item {
                     width: parent.width
                     height: 1
                     color: "#333333" // Subtle gray separator defining the sections
+                    visible: trayRepeater.count > 0
                 }
 
                 // --- Part 3: Volume Section ---
