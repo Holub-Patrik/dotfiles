@@ -6,14 +6,15 @@ import ".."
 
 Item {
     id: root
-    width: trayLabel.implicitWidth
-    height: trayLabel.implicitHeight
+    width: trayLabel.implicitWidth + 16 // Generous horizontal buffer
+    height: 30 // Spans full bar height for an exceptionally comfortable click zone
+
+    property var barWindow: null
 
     // Volume & Brightness State
     property int volumeLevel: 0
     property int brightnessLevel: 0
     property bool isMuted: false
-    property var barWindow: null
 
     // State query methods
     function updateVolume() {
@@ -21,6 +22,7 @@ Item {
         volProcess.running = true;
     }
 
+    // State query methods
     function updateBrightness() {
         briProcess.running = false;
         briProcess.running = true;
@@ -112,15 +114,16 @@ Item {
         font.family: Config.fontMain
         style: Text.Outline
         styleColor: Config.shadowColor
-        
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                // Fetch latest state before opening popup to guarantee freshness
-                root.updateVolume();
-                root.updateBrightness();
-                trayPopup.visible = !trayPopup.visible;
-            }
+        anchors.centerIn: parent // Center visually inside the large click zone
+    }
+
+    // MouseArea covers the full root hitbox (full bar height)
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            root.updateVolume();
+            root.updateBrightness();
+            trayPopup.visible = !trayPopup.visible;
         }
     }
 
@@ -136,7 +139,7 @@ Item {
         }
 
         implicitWidth: 220
-        implicitHeight: 142
+        implicitHeight: 164 // Slightly increased height to accommodate slider containers comfortably
         color: "transparent"
 
         // Elegant OLED-first card container with smooth animations
@@ -245,7 +248,7 @@ Item {
                 // --- Part 3: Volume Section ---
                 Column {
                     width: parent.width
-                    spacing: 4
+                    spacing: 2
 
                     Text {
                         text: root.isMuted ? "󰅖 Muted" : ` Volume: ${root.volumeLevel}%`
@@ -254,17 +257,24 @@ Item {
                         font.family: Config.fontMain
                     }
 
-                    Rectangle {
+                    // Invisible interaction hitbox wrapper for Volume Slider
+                    Item {
                         width: parent.width
-                        height: 8
-                        color: "#222222"
-                        radius: 4
+                        height: 24 // 24px height buffer makes it incredibly easy to click/drag
 
                         Rectangle {
-                            height: parent.height
-                            width: parent.width * (root.volumeLevel / 100.0)
-                            color: "#ffffff"
+                            width: parent.width
+                            height: 8
+                            color: "#222222"
                             radius: 4
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            Rectangle {
+                                height: parent.height
+                                width: parent.width * (root.volumeLevel / 100.0)
+                                color: "#ffffff"
+                                radius: 4
+                            }
                         }
 
                         MouseArea {
@@ -288,7 +298,7 @@ Item {
                 // --- Part 4: Brightness Section ---
                 Column {
                     width: parent.width
-                    spacing: 4
+                    spacing: 2
 
                     Text {
                         text: ` Brightness: ${root.brightnessLevel}%`
@@ -297,17 +307,24 @@ Item {
                         font.family: Config.fontMain
                     }
 
-                    Rectangle {
+                    // Invisible interaction hitbox wrapper for Brightness Slider
+                    Item {
                         width: parent.width
-                        height: 8
-                        color: "#222222"
-                        radius: 4
+                        height: 24 // 24px height buffer makes it incredibly easy to click/drag
 
                         Rectangle {
-                            height: parent.height
-                            width: parent.width * (root.brightnessLevel / 100.0)
-                            color: "#ffffff"
+                            width: parent.width
+                            height: 8
+                            color: "#222222"
                             radius: 4
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            Rectangle {
+                                height: parent.height
+                                width: parent.width * (root.brightnessLevel / 100.0)
+                                color: "#ffffff"
+                                radius: 4
+                            }
                         }
 
                         MouseArea {
