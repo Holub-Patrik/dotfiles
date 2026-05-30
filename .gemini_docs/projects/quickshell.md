@@ -22,5 +22,9 @@ This project implements the shell (bar/desktop) for the Linux setup using [Quick
   - An interactive Brightness slider/percentage indicator (clickable and draggable).
 - **Quickshell IPC Integration:** State properties are updated in real-time by keyboard hotkey presses or external system changes via an `IpcHandler` endpoint targeting `"volume_brightness"`.
 
+## Future Roadmap & Ideas
+- **Connected Dropdown Silhouette:** Draw a visual silhouette (e.g., using a custom triangle connector shape or smooth gradient merging) to make all dropdown popups feel physically "connected" to the main status bar rather than floating, inspired by premium shells like Noctalia.
+- **Coherent QT/GTK Theme:** Design a custom QT/Kvantum and GTK theme that matches the bar's OLED-first true black and high-contrast outline design. This would styling application menus (such as Vesktop's right-click menu) in perfect harmony with the desktop shell.
+
 ## Resources
 - Quickshell Reference: https://github.com/quickshell-mirror/quickshell

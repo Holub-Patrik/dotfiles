@@ -13,6 +13,7 @@ Item {
     property int volumeLevel: 0
     property int brightnessLevel: 0
     property bool isMuted: false
+    property var barWindow: null
 
     // State query methods
     function updateVolume() {
@@ -129,13 +130,9 @@ Item {
         visible: false
         
         anchor {
-            item: root
-            // Anchor to the bottom-right of the label
-            edges: Edges.Bottom | Edges.Right
-            // Expand down and to the left
-            gravity: Edges.Bottom | Edges.Left
-            // Offset slightly below the bar to avoid overlap
-            margins.top: 6
+            window: root.barWindow
+            rect.x: barWindow ? (barWindow.width - width - 10) : 0
+            rect.y: barWindow ? (barWindow.height + 6) : 0
         }
 
         implicitWidth: 220

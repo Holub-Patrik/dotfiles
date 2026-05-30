@@ -34,6 +34,7 @@ PanelWindow {
 
             Tray {
                 anchors.verticalCenter: parent.verticalCenter
+                barWindow: bar
             }
 
             Battery {
