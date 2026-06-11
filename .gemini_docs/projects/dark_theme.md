@@ -1,7 +1,8 @@
-# Dark Theme (JaKooLit based)
+# Dark Theme & QT Style (JaKooLit / OLED-first derivative)
 
-Configuration for QT and Kvantum themes to ensure a consistent dark look across all applications.
+Configuration for QT and Kvantum themes to ensure a consistent OLED-first dark look across all applications, using the system's primary accent color.
 
 ## Components
-- **Kvantum:** Catppuccin-based themes (Latte/Mocha).
-- **QT5/QT6:** Configuration files (`qt5ct.conf`, `qt6ct.conf`) using Catppuccin color schemes.
+- **Kvantum:** Custom `oled-accent` theme (derived from catppuccin-mocha-blue but recolored to true black `#000000` background, pure white text, and primary accent `#854D78`).
+- **QT5/QT6:** Configuration files (`qt5ct.conf`, `qt6ct.conf`) using the custom `OLED-Accent.conf` color palette.
+

@@ -2,7 +2,7 @@
 
 # Get the resolution of the first monitor (usually primary)
 RES=$(hyprctl monitors -j | jq -r '.[0].width')
-THEME="Bibata-Modern-Ice"
+THEME="phinger-cursors-light"
 
 if [ "$RES" -ge 3840 ]; then
     # 4K Laptop
@@ -25,3 +25,18 @@ echo "Xft.dpi: $DPI" | xrdb -merge
 hyprctl setcursor "$THEME" "$CURSOR"
 export XCURSOR_SIZE="$CURSOR"
 export HYPRCURSOR_SIZE="$CURSOR"
+
+# Setup and run xsettingsd dynamically for XWayland apps
+XSETTINGS_DPI=$((DPI * 1024))
+mkdir -p ~/.config/xsettingsd
+cat <<EOF > ~/.config/xsettingsd/xsettingsd.conf
+Xft/DPI $XSETTINGS_DPI
+Gtk/CursorThemeName "$THEME"
+Gtk/CursorThemeSize $CURSOR
+EOF
+
+# Restart xsettingsd to apply changes
+killall xsettingsd 2>/dev/null
+nohup xsettingsd >/dev/null 2>&1 &
+
+
