@@ -28,7 +28,10 @@ Xft.hintstyle: hintfull
 Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
+Xcursor.theme: $THEME
+Xcursor.size: $CURSOR
 EOF
+
 
 
 # Apply Cursor Scale (X11 and Wayland)
