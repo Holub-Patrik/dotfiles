@@ -18,7 +18,7 @@ This directory contains information about the various projects and configuration
 - [Fnott](projects/fnott.md): Notification daemon.
 - [Zsh](projects/zsh.md): Shell configuration.
 - [Scripts](projects/scripts.md): Local helper scripts.
-- [Dark Theme (JaKooLit)](projects/dark_theme.md): Kvantum/QT theme settings.
+- [Dark Theme](projects/dark_theme.md): Kvantum/QT theme settings.
 - [SSH](projects/ssh.md): SSH client configuration.
 - [Theme Standards](THEME.md): Shared wallust-based colors and stow management.
 

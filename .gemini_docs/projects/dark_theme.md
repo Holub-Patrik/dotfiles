@@ -1,4 +1,4 @@
-# Dark Theme & QT Style (JaKooLit / OLED-first derivative)
+# Dark Theme & QT Style (Custom OLED-first)
 
 Configuration for QT and Kvantum themes to ensure a consistent OLED-first dark look across all applications, using the system's primary accent color.
 
