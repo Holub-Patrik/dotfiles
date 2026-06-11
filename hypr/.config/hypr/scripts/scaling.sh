@@ -6,7 +6,7 @@ THEME="phinger-cursors-light"
 
 if [ "$RES" -ge 3840 ]; then
     # 4K Laptop
-    DPI=144
+    DPI=180
     CURSOR=32
 elif [ "$RES" -ge 2560 ]; then
     # 1440p PC (Assumed 100% scaling)
@@ -18,13 +18,26 @@ else
     CURSOR=24
 fi
 
-# Apply X11 DPI (for fonts and UI)
-echo "Xft.dpi: $DPI" | xrdb -merge
+# Apply X11 DPI and rendering settings (for fonts and UI)
+cat <<EOF | xrdb -merge
+Xft.dpi: $DPI
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+EOF
+
 
 # Apply Cursor Scale (X11 and Wayland)
 hyprctl setcursor "$THEME" "$CURSOR"
 export XCURSOR_SIZE="$CURSOR"
 export HYPRCURSOR_SIZE="$CURSOR"
+dbus-update-activation-environment --systemd XCURSOR_SIZE HYPRCURSOR_SIZE
+systemctl --user import-environment XCURSOR_SIZE HYPRCURSOR_SIZE 2>/dev/null || true
+
+
 
 # Setup and run xsettingsd dynamically for XWayland apps
 XSETTINGS_DPI=$((DPI * 1024))
