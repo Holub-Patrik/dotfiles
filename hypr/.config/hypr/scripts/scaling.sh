@@ -6,8 +6,9 @@ THEME="phinger-cursors-light"
 
 if [ "$RES" -ge 3840 ]; then
     # 4K Laptop
-    DPI=180
-    CURSOR=32
+    DPI=144
+    CURSOR=24
+
 elif [ "$RES" -ge 2560 ]; then
     # 1440p PC (Assumed 100% scaling)
     DPI=96
