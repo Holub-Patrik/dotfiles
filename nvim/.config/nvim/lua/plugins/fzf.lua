@@ -1,5 +1,5 @@
 local fff = {
-	'https://github.com/dmtrKovalenko/fff.nvim',
+	'dmtrKovalenko/fff.nvim',
 	config = function()
 		vim.api.nvim_create_autocmd('PackChanged', {
 			callback = function(ev)
@@ -16,8 +16,9 @@ local fff = {
 			debug = { enabled = false, show_scores = true },
 		}
 
-		vim.keymap.set('n', 'ff', function() require('fff').find_files() end, { desc = 'FFFind files' })
-		vim.keymap.set('n', 'fg', function() require('fff').live_grep() end, { desc = 'FFFind files' })
+		vim.keymap.set('n', 'ff', require('fff').find_files, { desc = 'FFFind files' })
+		vim.keymap.set('n', 'fg', require('fff').live_grep, { desc = 'FFFind word (grep)' })
+		vim.keymap.set('n', 'fc', require('fff').live_grep_under_cursor, { desc = 'FFFind word under cursor' })
 	end
 }
 

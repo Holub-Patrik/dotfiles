@@ -3,12 +3,11 @@
 sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji
 sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common
 
-#TODO:
 mkdir -p "$HOME/.local/share/fonts/ttf/"
 mkdir -p "$HOME/.local/share/fonts/otf/"
 
-#cp -r `ls downloaded_fonts/otf` "$HOME/.local/share/fonts/otf"
-#cp -r `ls downloaded_fonts/ttf` "$HOME/.local/share/fonts/ttf"
+cp -r "$HOME/dotfiles/setup/downloaded_fonts/otf" "$HOME/.local/share/fonts/otf"
+cp -r "$HOME/dotfiles/setup/downloaded_fonts/ttf" "$HOME/.local/share/fonts/ttf"
 
 setup_cjk_proper_fallbak () {
   # Define paths
@@ -27,21 +26,21 @@ setup_cjk_proper_fallbak () {
   # Write the new configuration
   echo "Generating $FONT_CONFIG_FILE..."
   cat > "$FONT_CONFIG_FILE" <<EOF
-  <?xml version="1.0"?>
-  <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-  <fontconfig>
-    <alias>
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+  <alias>
+    <family>Monaspace Neon NF</family>
+    <prefer>
       <family>Monaspace Neon NF</family>
-      <prefer>
-        <family>Monaspace Neon NF</family>
-        <family>Noto Sans CJK JP</family>
-        <family>Noto Sans CJK KR</family>
-        <family>Noto Sans CJK SC</family>
-        <family>Noto Sans CJK TC</family>
-      </prefer>
-    </alias>
-  </fontconfig>
-  EOF
+      <family>Noto Sans CJK JP</family>
+      <family>Noto Sans CJK KR</family>
+      <family>Noto Sans CJK SC</family>
+      <family>Noto Sans CJK TC</family>
+    </prefer>
+  </alias>
+</fontconfig>
+EOF
 
   # Update font cache
   echo "Updating font cache..."

@@ -1,29 +1,10 @@
--- PidgyDots - Hyprland Lua Configuration
--- Focuses on simplicity, OLED optimization, and high performance.
--- Refer to https://wiki.hypr.land/ for full API documentation.
-
---------------------------------------------------------------------------------
--- 1. MONITORS & WORKSPACES
---------------------------------------------------------------------------------
-
--- Configure display (OLED eDP-1, 10-bit depth for rich colors)
-hl.monitor({
-    output   = "eDP-1",
-    mode     = "3840x2400@60.0",
-    position = "0x0",
-    scale    = 1.4999999999999996,
-    bitdepth = 10,
-})
+require("monitors")
 
 -- Default monitor-workspace assignments
 hl.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true })
 hl.workspace_rule({ workspace = "2", monitor = "DP-1", default = true })
 hl.workspace_rule({ workspace = "3", monitor = "HDMI-A-1", default = true })
 hl.workspace_rule({ workspace = "4", monitor = "HDMI-A-1" })
-
---------------------------------------------------------------------------------
--- 2. ENVIRONMENT VARIABLES
---------------------------------------------------------------------------------
 
 hl.env("GDK_BACKEND", "wayland,x11,*")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
@@ -33,10 +14,11 @@ hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
-hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_QUICK_CONTROLS_STYLE", "org.hyprland.style")
 hl.env("GDK_SCALE", "1")
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+hl.env("GTK_USE_PORTAL", "1")
 
 -- Nvidia specific variables
 hl.env("LIBVA_DRIVER_NAME", "nvidia")
@@ -44,9 +26,6 @@ hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 hl.env("NVD_BACKEND", "direct")
 hl.env("GSK_RENDERER", "ngl")
 
---------------------------------------------------------------------------------
--- 3. LOOK & FEEL (OLED-FIRST & PERFORMANCE-ORIENTED)
---------------------------------------------------------------------------------
 
 hl.config({
     general = {
@@ -56,7 +35,7 @@ hl.config({
         gaps_out = 0,
         resize_on_border = true,
         col = {
-            active_border   = "rgba(cba6f7ff)", -- Sleek Violet
+            active_border   = "rgba(cba6f7ff)",
             inactive_border = "rgba(313244ff)",
         },
     },
@@ -92,7 +71,7 @@ hl.config({
     misc = {
         disable_hyprland_logo = true,
         disable_splash_rendering = true,
-        vrr = 2,    -- Fullscreen VRR Adaptive Sync
+        vrr = 2, -- Fullscreen VRR Adaptive Sync
         mouse_move_enables_dpms = true,
         key_press_enables_dpms = true,
         focus_on_activate = false,
@@ -125,10 +104,6 @@ hl.config({
     },
 })
 
---------------------------------------------------------------------------------
--- 4. BÉZIER CURVES & ANIMATIONS
---------------------------------------------------------------------------------
-
 hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
 hl.curve("fastBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.0 } } })
 hl.curve("popBezier", { type = "bezier", points = { { 0.175, 0.885 }, { 0.32, 1.275 } } })
@@ -145,11 +120,11 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 2, bezier = "popBezi
 --------------------------------------------------------------------------------
 
 -- Enable float for XWayland drag-and-drop
-hl.window_rule({
-    name  = "xwayland-float",
-    match = { xwayland = true },
-    float = true,
-})
+-- hl.window_rule({
+--     name  = "xwayland-float",
+--     match = { xwayland = true },
+--     float = true,
+-- })
 
 -- Floating shell / Calculator
 hl.window_rule({
@@ -160,55 +135,46 @@ hl.window_rule({
     center = true,
 })
 
---------------------------------------------------------------------------------
--- 6. AUTOSTART (PROCESSES)
---------------------------------------------------------------------------------
-
 hl.on("hyprland.start", function()
-    hl.exec_cmd("quickshell") -- Start custom QML bar
-    hl.exec_cmd("hyprpaper")  -- Wallpapers
-    hl.exec_cmd("fnott")      -- Notifications
+    hl.exec_cmd("noctalia")
     hl.exec_cmd("~/.config/hypr/scripts/scaling.sh")
+    hl.exec_cmd("systemctl --user start hyprpolkitagent")
 end)
-
---------------------------------------------------------------------------------
--- 7. KEYBINDINGS
---------------------------------------------------------------------------------
 
 local mainMod = "SUPER"
 local term    = "kitty"
-local files   = "kitty -e yazi"
+local files   = "yazi"
 local browser = 'xdg-open "https://"'
 
 -- Application launchers
-hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(term))
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(files))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("fuzzel"))
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("~/.config/hypr/scripts/calculator.sh"))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("~/.config/hypr/scripts/wallpaper.sh"))
-hl.bind("CTRL + SHIFT + P", hl.dsp.exec_cmd("~/.config/hypr/scripts/powermenu.sh"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh"))
+hl.bind(mainMod .. "+Return", hl.dsp.exec_cmd(term))
+hl.bind(mainMod .. "+E", hl.dsp.exec_cmd("kitty -e " .. files))
+hl.bind(mainMod .. "+B", hl.dsp.exec_cmd(browser))
+-- hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("fuzzel")) -- Comment if noctalia
+hl.bind(mainMod .. "+C", hl.dsp.exec_cmd("~/.config/hypr/scripts/calculator.sh"))
+-- hl.bind(mainMod .. "+W", hl.dsp.exec_cmd("~/.config/hypr/scripts/wallpaper.sh"))
+-- hl.bind("CTRL+SHIFT+P", hl.dsp.exec_cmd("~/.config/hypr/scripts/powermenu.sh"))
+-- hl.bind(mainMod .. "+SHIFT+S", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh"))
 
 -- Window operations
-hl.bind(mainMod .. " + Q", hl.dsp.window.close())
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
-hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+hl.bind(mainMod .. "+Q", hl.dsp.window.close())
+hl.bind(mainMod .. "+F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. "+Space", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. "+J", hl.dsp.layout("togglesplit"))
 
 -- Navigation focus
-hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. "+left", hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. "+right", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. "+up", hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. "+down", hl.dsp.focus({ direction = "down" }))
 
 -- Move window positioning
-hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
-hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
-hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
-hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. "+SHIFT+left", hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. "+SHIFT+right", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. "+SHIFT+up", hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. "+SHIFT+down", hl.dsp.window.move({ direction = "down" }))
 
--- Workspaces switching and moving windows (1-10 mapped dynamically)
+-- Workspaces switching and moving windows
 for i = 1, 10 do
     local key = i % 10
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
@@ -219,19 +185,42 @@ end
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Audio/Media bindings (hardware keys)
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume.sh --inc"),
-    { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume.sh --dec"),
-    { locked = true, repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume.sh --toggle"), { locked = true })
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume.sh --toggle-mic"), { locked = true })
+-- Noctalia
 
--- Screen brightness bindings (hardware keys)
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh --inc"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh --dec"), { locked = true, repeating = true })
+local ipc = "noctalia msg "
+
+hl.bind(mainMod .. "+D", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
+hl.bind(mainMod .. "+S", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
+hl.bind(mainMod .. "+comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
+hl.bind("CTRL+SHIFT+P", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
+hl.bind(mainMod .. "+SHIFT+S", hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+hl.bind(mainMod .. "+L", hl.dsp.exec_cmd(ipc .. "session lock-and-suspend"))
+
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"))
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd(ipc .. "volume-mute"))
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(ipc .. "brightness-up"))
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"))
+
+hl.window_rule({
+    match = { class = "dev.noctalia.Noctalia" },
+    float = true,
+    size = { 1080, 920 },
+})
+
+hl.layer_rule({
+    name = "noctalia",
+    match = {
+        namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd)$",
+    },
+    no_anim = true,
+    ignore_alpha = 0.5,
+    blur = true,
+    blur_popups = true,
+})
 
 -- Keyboard backlight brightness bindings (hardware keys)
-hl.bind("XF86KbdBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -d 'asus::kbd_backlight' set 1+"), { locked = true, repeating = true })
-hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("brightnessctl -d 'asus::kbd_backlight' set 1-"), { locked = true, repeating = true })
-
+hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd("brightnessctl -d 'asus::kbd_backlight' set 1+"),
+    { locked = true, repeating = true })
+hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("brightnessctl -d 'asus::kbd_backlight' set 1-"),
+    { locked = true, repeating = true })
