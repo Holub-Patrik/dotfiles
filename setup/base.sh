@@ -1,6 +1,7 @@
 # base packages that I use on daily basis / need for regural use
 
 sudo pacman -S base-devel git \
+	hyprland hyprpolkitagent \
 	zsh zsh-syntax-highlighting \
 	clang rustup lldb llvm odin zig python nodejs npm python-pipx uv cmake libc++ onetbb \
 	kitty kitty-terminfo kitty-shell-integration \
@@ -22,6 +23,21 @@ cd paru
 makepkg -si
 cd ..
 
+# noctalia and noctalia greeter
 paru -S noctalia-git
+paru -S noctalia-greeter-git
 
+# setup noctalia greeter
+sudo mkdir -p /etc/greetd
+
+sudo tee /etc/greetd/config.toml >/dev/null <<'EOF'
+[terminal]
+vt = 1
+
+[default_session]
+command = "/usr/bin/noctalia-greeter-session"
+user = "greeter"
+EOF
+
+# termchoose
 kitten desktop-ui enable-portal
