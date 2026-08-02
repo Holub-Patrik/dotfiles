@@ -127,3 +127,9 @@ end, {
 	bang = true,
 	complete = complete_client,
 })
+
+vim.diagnostic.config({
+	virtual_lines = {
+		current_line = true
+	},
+})
