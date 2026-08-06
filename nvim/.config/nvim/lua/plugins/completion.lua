@@ -2,8 +2,6 @@ local M = {
 	"saghen/blink.cmp",
 	-- event = "BufEnter", -- useless because of alpha
 	-- optional: provides snippets for the snippet source
-	dependencies = { "rafamadriz/friendly-snippets" },
-
 	version = vim.version.range("^1"),
 
 	---@module 'blink.cmp'
@@ -39,13 +37,39 @@ local M = {
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = { "lazydev", "lsp", "buffer", "path", "snippets" },
+			default = { "lsp", "path", "buffer" },
+			per_filetype = {
+				-- optionally inherit from the `default` sources
+				lua = { inherit_defaults = true, 'lazydev' }
+			},
 			providers = {
 				lazydev = {
 					name = "LazyDev",
 					module = "lazydev.integrations.blink",
 					score_offset = 100,
 				},
+				lsp = {
+					score_offset = 50,
+					-- WORKAROUND(ols): when the typed prefix is exactly an Odin
+					-- keyword (e.g. "do"), ols returns an empty completion list
+					-- marked as *complete* (isIncomplete=false). blink.cmp caches
+					-- that response and keeps serving it on every following
+					-- keystroke in the same context, so completion looks dead.
+					-- Mark empty responses as incomplete and drop the cached
+					-- entry, so the next keystroke re-queries ols.
+					override = {
+						get_completions = function(self, context, callback)
+							return require("blink.cmp.sources.lsp").get_completions(self, context, function(response)
+								if response ~= nil and #response.items == 0 then
+									response.is_incomplete_forward = true
+									response.is_incomplete_backward = true
+									require("blink.cmp.sources.lsp.cache").entries = {}
+								end
+								callback(response)
+							end)
+						end,
+					},
+				}
 			},
 		},
 
