@@ -12,7 +12,7 @@ sudo pacman -S base-devel git \
 	nwg-displays \
 	libqalculate \
 	unzip man man-db \
-	xorg-xrdb
+	xorg-xrdb \
 
 git config --global user.email "23bulohp@gmail.com"
 git config --global user.name "Holub Patrik"

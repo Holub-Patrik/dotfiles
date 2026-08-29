@@ -180,6 +180,9 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
+hl.bind(mainMod .. "+M", hl.dsp.focus({ workspace = "10" }))
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "10" }))
+
 
 -- Mouse operations (drag, resize)
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
