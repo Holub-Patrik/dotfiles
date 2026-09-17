@@ -6,23 +6,23 @@ local ensured_servers = {
 	"ruff",
 	-- "basedpyright",
 	"ty",
-	-- "gopls",
+	"gopls",
 }
 
 require("mason-lspconfig").setup({
-	-- ensure_installed = ensured_servers,
+	ensure_installed = {},
 	automatic_enable = true,
 })
 
 vim.lsp.config("clangd", {
 	cmd = {
-		"/home/holubpat/clang-p2996/build/bin/clangd",
+		"clangd",
 		"--background-index",
 		"--clang-tidy",
 		"--header-insertion=never",
 	},
 })
-vim.lsp.enable("clangd")
+-- vim.lsp.enable("clangd")
 
 -- vim.lsp.config("basedpyright", {
 -- 	settings = {
